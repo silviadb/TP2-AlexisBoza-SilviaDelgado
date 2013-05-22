@@ -1,0 +1,662 @@
+Terminals unused in grammar
+
+   "<"
+   ">"
+
+
+Grammar
+
+    0 $accept: html_tag $end
+
+    1 html_tag: '<' T_html '>' head_tag body_tag "</" T_html '>'
+
+    2 head_tag: '<' T_head '>' title_tag "</" T_head '>'
+
+    3 title_tag: '<' T_title '>' Identificador "</" T_title '>'
+
+    4 body_tag: '<' T_body '>' contenido "</" T_body '>'
+
+    5 contenido: h1_tag
+    6          | h2_tag
+    7          | h3_tag
+    8          | h4_tag
+    9          | h5_tag
+   10          | h6_tag
+
+   11 h1_tag: '<' T_h1 '>' Identificador "</" T_h1 '>'
+
+   12 h2_tag: '<' T_h2 '>' Identificador "</" T_h2 '>'
+
+   13 h3_tag: '<' T_h3 '>' Identificador "</" T_h3 '>'
+
+   14 h4_tag: '<' T_h4 '>' Identificador "</" T_h4 '>'
+
+   15 h5_tag: '<' T_h5 '>' Identificador "</" T_h5 '>'
+
+   16 h6_tag: '<' T_h6 '>' Identificador "</" T_h6 '>'
+
+   17 Identificador: Ident
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'<' (60) 1 2 3 4 11 12 13 14 15 16
+'>' (62) 1 2 3 4 11 12 13 14 15 16
+error (256)
+T_body (258) 4
+T_head (259) 2
+T_html (260) 1
+T_title (261) 3
+T_h1 (262) 11
+T_h2 (263) 12
+T_h3 (264) 13
+T_h4 (265) 14
+T_h5 (266) 15
+T_h6 (267) 16
+Ident (268) 17
+"<" (269)
+">" (270)
+"</" (271) 1 2 3 4 11 12 13 14 15 16
+
+
+Nonterminals, with rules where they appear
+
+$accept (19)
+    on left: 0
+html_tag (20)
+    on left: 1, on right: 0
+head_tag (21)
+    on left: 2, on right: 1
+title_tag (22)
+    on left: 3, on right: 2
+body_tag (23)
+    on left: 4, on right: 1
+contenido (24)
+    on left: 5 6 7 8 9 10, on right: 4
+h1_tag (25)
+    on left: 11, on right: 5
+h2_tag (26)
+    on left: 12, on right: 6
+h3_tag (27)
+    on left: 13, on right: 7
+h4_tag (28)
+    on left: 14, on right: 8
+h5_tag (29)
+    on left: 15, on right: 9
+h6_tag (30)
+    on left: 16, on right: 10
+Identificador (31)
+    on left: 17, on right: 3 11 12 13 14 15 16
+
+
+State 0
+
+    0 $accept: . html_tag $end
+
+    '<'  shift, and go to state 1
+
+    html_tag  go to state 2
+
+
+State 1
+
+    1 html_tag: '<' . T_html '>' head_tag body_tag "</" T_html '>'
+
+    T_html  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: html_tag . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 html_tag: '<' T_html . '>' head_tag body_tag "</" T_html '>'
+
+    '>'  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: html_tag $end .
+
+    $default  accept
+
+
+State 5
+
+    1 html_tag: '<' T_html '>' . head_tag body_tag "</" T_html '>'
+
+    '<'  shift, and go to state 6
+
+    head_tag  go to state 7
+
+
+State 6
+
+    2 head_tag: '<' . T_head '>' title_tag "</" T_head '>'
+
+    T_head  shift, and go to state 8
+
+
+State 7
+
+    1 html_tag: '<' T_html '>' head_tag . body_tag "</" T_html '>'
+
+    '<'  shift, and go to state 9
+
+    body_tag  go to state 10
+
+
+State 8
+
+    2 head_tag: '<' T_head . '>' title_tag "</" T_head '>'
+
+    '>'  shift, and go to state 11
+
+
+State 9
+
+    4 body_tag: '<' . T_body '>' contenido "</" T_body '>'
+
+    T_body  shift, and go to state 12
+
+
+State 10
+
+    1 html_tag: '<' T_html '>' head_tag body_tag . "</" T_html '>'
+
+    "</"  shift, and go to state 13
+
+
+State 11
+
+    2 head_tag: '<' T_head '>' . title_tag "</" T_head '>'
+
+    '<'  shift, and go to state 14
+
+    title_tag  go to state 15
+
+
+State 12
+
+    4 body_tag: '<' T_body . '>' contenido "</" T_body '>'
+
+    '>'  shift, and go to state 16
+
+
+State 13
+
+    1 html_tag: '<' T_html '>' head_tag body_tag "</" . T_html '>'
+
+    T_html  shift, and go to state 17
+
+
+State 14
+
+    3 title_tag: '<' . T_title '>' Identificador "</" T_title '>'
+
+    T_title  shift, and go to state 18
+
+
+State 15
+
+    2 head_tag: '<' T_head '>' title_tag . "</" T_head '>'
+
+    "</"  shift, and go to state 19
+
+
+State 16
+
+    4 body_tag: '<' T_body '>' . contenido "</" T_body '>'
+
+    '<'  shift, and go to state 20
+
+    contenido  go to state 21
+    h1_tag     go to state 22
+    h2_tag     go to state 23
+    h3_tag     go to state 24
+    h4_tag     go to state 25
+    h5_tag     go to state 26
+    h6_tag     go to state 27
+
+
+State 17
+
+    1 html_tag: '<' T_html '>' head_tag body_tag "</" T_html . '>'
+
+    '>'  shift, and go to state 28
+
+
+State 18
+
+    3 title_tag: '<' T_title . '>' Identificador "</" T_title '>'
+
+    '>'  shift, and go to state 29
+
+
+State 19
+
+    2 head_tag: '<' T_head '>' title_tag "</" . T_head '>'
+
+    T_head  shift, and go to state 30
+
+
+State 20
+
+   11 h1_tag: '<' . T_h1 '>' Identificador "</" T_h1 '>'
+   12 h2_tag: '<' . T_h2 '>' Identificador "</" T_h2 '>'
+   13 h3_tag: '<' . T_h3 '>' Identificador "</" T_h3 '>'
+   14 h4_tag: '<' . T_h4 '>' Identificador "</" T_h4 '>'
+   15 h5_tag: '<' . T_h5 '>' Identificador "</" T_h5 '>'
+   16 h6_tag: '<' . T_h6 '>' Identificador "</" T_h6 '>'
+
+    T_h1  shift, and go to state 31
+    T_h2  shift, and go to state 32
+    T_h3  shift, and go to state 33
+    T_h4  shift, and go to state 34
+    T_h5  shift, and go to state 35
+    T_h6  shift, and go to state 36
+
+
+State 21
+
+    4 body_tag: '<' T_body '>' contenido . "</" T_body '>'
+
+    "</"  shift, and go to state 37
+
+
+State 22
+
+    5 contenido: h1_tag .
+
+    $default  reduce using rule 5 (contenido)
+
+
+State 23
+
+    6 contenido: h2_tag .
+
+    $default  reduce using rule 6 (contenido)
+
+
+State 24
+
+    7 contenido: h3_tag .
+
+    $default  reduce using rule 7 (contenido)
+
+
+State 25
+
+    8 contenido: h4_tag .
+
+    $default  reduce using rule 8 (contenido)
+
+
+State 26
+
+    9 contenido: h5_tag .
+
+    $default  reduce using rule 9 (contenido)
+
+
+State 27
+
+   10 contenido: h6_tag .
+
+    $default  reduce using rule 10 (contenido)
+
+
+State 28
+
+    1 html_tag: '<' T_html '>' head_tag body_tag "</" T_html '>' .
+
+    $default  reduce using rule 1 (html_tag)
+
+
+State 29
+
+    3 title_tag: '<' T_title '>' . Identificador "</" T_title '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 39
+
+
+State 30
+
+    2 head_tag: '<' T_head '>' title_tag "</" T_head . '>'
+
+    '>'  shift, and go to state 40
+
+
+State 31
+
+   11 h1_tag: '<' T_h1 . '>' Identificador "</" T_h1 '>'
+
+    '>'  shift, and go to state 41
+
+
+State 32
+
+   12 h2_tag: '<' T_h2 . '>' Identificador "</" T_h2 '>'
+
+    '>'  shift, and go to state 42
+
+
+State 33
+
+   13 h3_tag: '<' T_h3 . '>' Identificador "</" T_h3 '>'
+
+    '>'  shift, and go to state 43
+
+
+State 34
+
+   14 h4_tag: '<' T_h4 . '>' Identificador "</" T_h4 '>'
+
+    '>'  shift, and go to state 44
+
+
+State 35
+
+   15 h5_tag: '<' T_h5 . '>' Identificador "</" T_h5 '>'
+
+    '>'  shift, and go to state 45
+
+
+State 36
+
+   16 h6_tag: '<' T_h6 . '>' Identificador "</" T_h6 '>'
+
+    '>'  shift, and go to state 46
+
+
+State 37
+
+    4 body_tag: '<' T_body '>' contenido "</" . T_body '>'
+
+    T_body  shift, and go to state 47
+
+
+State 38
+
+   17 Identificador: Ident .
+
+    $default  reduce using rule 17 (Identificador)
+
+
+State 39
+
+    3 title_tag: '<' T_title '>' Identificador . "</" T_title '>'
+
+    "</"  shift, and go to state 48
+
+
+State 40
+
+    2 head_tag: '<' T_head '>' title_tag "</" T_head '>' .
+
+    $default  reduce using rule 2 (head_tag)
+
+
+State 41
+
+   11 h1_tag: '<' T_h1 '>' . Identificador "</" T_h1 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 49
+
+
+State 42
+
+   12 h2_tag: '<' T_h2 '>' . Identificador "</" T_h2 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 50
+
+
+State 43
+
+   13 h3_tag: '<' T_h3 '>' . Identificador "</" T_h3 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 51
+
+
+State 44
+
+   14 h4_tag: '<' T_h4 '>' . Identificador "</" T_h4 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 52
+
+
+State 45
+
+   15 h5_tag: '<' T_h5 '>' . Identificador "</" T_h5 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 53
+
+
+State 46
+
+   16 h6_tag: '<' T_h6 '>' . Identificador "</" T_h6 '>'
+
+    Ident  shift, and go to state 38
+
+    Identificador  go to state 54
+
+
+State 47
+
+    4 body_tag: '<' T_body '>' contenido "</" T_body . '>'
+
+    '>'  shift, and go to state 55
+
+
+State 48
+
+    3 title_tag: '<' T_title '>' Identificador "</" . T_title '>'
+
+    T_title  shift, and go to state 56
+
+
+State 49
+
+   11 h1_tag: '<' T_h1 '>' Identificador . "</" T_h1 '>'
+
+    "</"  shift, and go to state 57
+
+
+State 50
+
+   12 h2_tag: '<' T_h2 '>' Identificador . "</" T_h2 '>'
+
+    "</"  shift, and go to state 58
+
+
+State 51
+
+   13 h3_tag: '<' T_h3 '>' Identificador . "</" T_h3 '>'
+
+    "</"  shift, and go to state 59
+
+
+State 52
+
+   14 h4_tag: '<' T_h4 '>' Identificador . "</" T_h4 '>'
+
+    "</"  shift, and go to state 60
+
+
+State 53
+
+   15 h5_tag: '<' T_h5 '>' Identificador . "</" T_h5 '>'
+
+    "</"  shift, and go to state 61
+
+
+State 54
+
+   16 h6_tag: '<' T_h6 '>' Identificador . "</" T_h6 '>'
+
+    "</"  shift, and go to state 62
+
+
+State 55
+
+    4 body_tag: '<' T_body '>' contenido "</" T_body '>' .
+
+    $default  reduce using rule 4 (body_tag)
+
+
+State 56
+
+    3 title_tag: '<' T_title '>' Identificador "</" T_title . '>'
+
+    '>'  shift, and go to state 63
+
+
+State 57
+
+   11 h1_tag: '<' T_h1 '>' Identificador "</" . T_h1 '>'
+
+    T_h1  shift, and go to state 64
+
+
+State 58
+
+   12 h2_tag: '<' T_h2 '>' Identificador "</" . T_h2 '>'
+
+    T_h2  shift, and go to state 65
+
+
+State 59
+
+   13 h3_tag: '<' T_h3 '>' Identificador "</" . T_h3 '>'
+
+    T_h3  shift, and go to state 66
+
+
+State 60
+
+   14 h4_tag: '<' T_h4 '>' Identificador "</" . T_h4 '>'
+
+    T_h4  shift, and go to state 67
+
+
+State 61
+
+   15 h5_tag: '<' T_h5 '>' Identificador "</" . T_h5 '>'
+
+    T_h5  shift, and go to state 68
+
+
+State 62
+
+   16 h6_tag: '<' T_h6 '>' Identificador "</" . T_h6 '>'
+
+    T_h6  shift, and go to state 69
+
+
+State 63
+
+    3 title_tag: '<' T_title '>' Identificador "</" T_title '>' .
+
+    $default  reduce using rule 3 (title_tag)
+
+
+State 64
+
+   11 h1_tag: '<' T_h1 '>' Identificador "</" T_h1 . '>'
+
+    '>'  shift, and go to state 70
+
+
+State 65
+
+   12 h2_tag: '<' T_h2 '>' Identificador "</" T_h2 . '>'
+
+    '>'  shift, and go to state 71
+
+
+State 66
+
+   13 h3_tag: '<' T_h3 '>' Identificador "</" T_h3 . '>'
+
+    '>'  shift, and go to state 72
+
+
+State 67
+
+   14 h4_tag: '<' T_h4 '>' Identificador "</" T_h4 . '>'
+
+    '>'  shift, and go to state 73
+
+
+State 68
+
+   15 h5_tag: '<' T_h5 '>' Identificador "</" T_h5 . '>'
+
+    '>'  shift, and go to state 74
+
+
+State 69
+
+   16 h6_tag: '<' T_h6 '>' Identificador "</" T_h6 . '>'
+
+    '>'  shift, and go to state 75
+
+
+State 70
+
+   11 h1_tag: '<' T_h1 '>' Identificador "</" T_h1 '>' .
+
+    $default  reduce using rule 11 (h1_tag)
+
+
+State 71
+
+   12 h2_tag: '<' T_h2 '>' Identificador "</" T_h2 '>' .
+
+    $default  reduce using rule 12 (h2_tag)
+
+
+State 72
+
+   13 h3_tag: '<' T_h3 '>' Identificador "</" T_h3 '>' .
+
+    $default  reduce using rule 13 (h3_tag)
+
+
+State 73
+
+   14 h4_tag: '<' T_h4 '>' Identificador "</" T_h4 '>' .
+
+    $default  reduce using rule 14 (h4_tag)
+
+
+State 74
+
+   15 h5_tag: '<' T_h5 '>' Identificador "</" T_h5 '>' .
+
+    $default  reduce using rule 15 (h5_tag)
+
+
+State 75
+
+   16 h6_tag: '<' T_h6 '>' Identificador "</" T_h6 '>' .
+
+    $default  reduce using rule 16 (h6_tag)

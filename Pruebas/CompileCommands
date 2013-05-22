@@ -1,0 +1,4 @@
+flex prueba.l
+bison -vdty prueba.y -o y.tab.c
+gcc -c lex.yy.c y.tab.c
+gcc -o parser lex.yy.o y.tab.o -ly -lfl
