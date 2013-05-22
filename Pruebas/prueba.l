@@ -25,14 +25,10 @@ head {if(T_identificador == 1) return T_head;}
 html {if(T_identificador == 1) return T_html;}
 title {if(T_identificador == 1) return T_title;}
 h1 {if(T_identificador == 1) return T_h1;}
-h2 {if(T_identificador == 1) return T_h2;}
-h3 {if(T_identificador == 1) return T_h3;}
-h4 {if(T_identificador == 1) return T_h4;}
-h5 {if(T_identificador == 1) return T_h5;}
-h6 {if(T_identificador == 1) return T_h6;}
-{Tag}	{T_identificador=1;return '<';}
-{TagClose} {T_identificador=0;return '>';}
+{Tag}	{T_identificador=1;return T_Tag;}
+{TagClose} {T_identificador=0;return T_TagClose;}
 {Ident} {yylval.str=strdup(yytext);return Ident;}
+{FinalTagClose}  {T_identificador=1; return T_FinalTag;}
 á fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno);/*ERRORES*/
 à fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno);
 é fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno);

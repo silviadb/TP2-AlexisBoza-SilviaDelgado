@@ -51,14 +51,10 @@ extern int yydebug;
      T_html = 260,
      T_title = 261,
      T_h1 = 262,
-     T_h2 = 263,
-     T_h3 = 264,
-     T_h4 = 265,
-     T_h5 = 266,
-     T_h6 = 267,
-     Ident = 268,
-     OpenTag = 269,
-     CloseTag = 270
+     Ident = 263,
+     T_Tag = 264,
+     T_TagClose = 265,
+     T_FinalTag = 266
    };
 #endif
 /* Tokens.  */
@@ -67,14 +63,10 @@ extern int yydebug;
 #define T_html 260
 #define T_title 261
 #define T_h1 262
-#define T_h2 263
-#define T_h3 264
-#define T_h4 265
-#define T_h5 266
-#define T_h6 267
-#define Ident 268
-#define OpenTag 269
-#define CloseTag 270
+#define Ident 263
+#define T_Tag 264
+#define T_TagClose 265
+#define T_FinalTag 266
 
 
 
@@ -88,7 +80,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 92 "y.tab.h"
+#line 84 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

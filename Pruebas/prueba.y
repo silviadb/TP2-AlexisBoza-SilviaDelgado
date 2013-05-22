@@ -5,37 +5,21 @@
 %union{
 	char *str;
 }
-%token T_body T_head T_html T_title T_h1 T_h2 T_h3 T_h4 T_h5 T_h6 Ident
-%token OpenTag "<"
-%token CloseTag ">"
+%token T_body T_head T_html T_title T_h1 Ident T_Tag
+%token T_TagClose T_FinalTag 
 %%
 /*Tokens ordenados del mas general al mas especifico*/
-html_tag:'<'T_html'>'head_tag body_tag"</"T_html'>'{printf("Buena");}
+html_tag:T_Tag T_html T_TagClose head_tag body_tag T_FinalTag T_html T_TagClose {printf("Buena");}
 	;
-head_tag:'<'T_head'>'title_tag"</"T_head'>'{printf("Buena");}
+head_tag:T_Tag T_head T_TagClose title_tag T_FinalTag T_head T_TagClose{printf("Buena");}
 	;
-title_tag:'<'T_title'>'Identificador"</"T_title'>'{printf("Buena");}
+title_tag:T_Tag T_title T_TagClose Identificador T_FinalTag T_title T_TagClose{printf("Buena");}
 	;
-body_tag:'<'T_body'>'contenido"</"T_body'>'{printf("Buena");}
+body_tag:T_Tag T_body T_TagClose contenido T_FinalTag T_body T_TagClose{printf("Buena");}
 	;
 contenido: h1_tag
-	|h2_tag
-	|h3_tag
-	|h4_tag
-	|h5_tag
-	|h6_tag
 	;
-h1_tag	:'<'T_h1'>'Identificador"</"T_h1'>'{printf("Buena");}/*porque no funciona poniendolo "</" asi*/
-	;
-h2_tag	:'<'T_h2'>'Identificador"</"T_h2'>'{printf("Buena");}
-	;
-h3_tag	:'<'T_h3'>'Identificador"</"T_h3'>'{printf("Buena");}
-	;
-h4_tag	:'<'T_h4'>'Identificador"</"T_h4'>'{printf("Buena");}
-	;
-h5_tag	:'<'T_h5'>'Identificador"</"T_h5'>'{printf("Buena");}
-	;
-h6_tag	:'<'T_h6'>'Identificador"</"T_h6'>'{printf("Buena");}
+h1_tag	:T_Tag T_h1 T_TagClose Identificador T_FinalTag T_h1 T_TagClose{printf("Buena");}/*porque no funciona poniendolo "</" asi*/
 	;
 Identificador:Ident{printf("[T_IDENT] %s",yylval.str);}
 	;
