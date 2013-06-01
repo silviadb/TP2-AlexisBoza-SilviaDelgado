@@ -240,6 +240,9 @@ object
         ;
 comment :       T_comment_open body_content T_comment_close 
 	;
+ATT     :       T_ATT  ATT
+        |
+        ;
 %%
 int main(){
  return yyparse();
