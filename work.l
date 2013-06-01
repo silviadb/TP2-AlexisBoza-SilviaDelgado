@@ -15,7 +15,7 @@ CommentOpenTag "<--"
 CommentCloseTag "-->"
 Ident  [a-z,A-Z,0-9,".",":",",","/","\-","_",'\\',"@","{","}","(",")"]+
 Expresion "\""+{Ident}+"\""
-Atribute [Ident] "=" [Expresion]  
+Atribute {Ident}"="{Expresion}  
 /*fin definiciones*/
 %%
 a {if(flag == 1) return  T_a;}
