@@ -166,7 +166,20 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -671,6 +684,14 @@ static yyconst flex_int16_t yy_chk[836] =
       172,  172,  172,  172,  172
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[60] =
+    {   0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+        };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -693,7 +714,7 @@ char *yytext;
 int flag = 0;/*valor default 0(fuera del tag tag) y 1( dentro del tag)*/
 /*definiciones*/
 /*fin definiciones*/
-#line 697 "lex.yy.c"
+#line 718 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -875,9 +896,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 20 "work.l"
+#line 21 "work.l"
 
-#line 881 "lex.yy.c"
+#line 902 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -949,6 +970,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					   
+    yylineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -962,301 +993,301 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 21 "work.l"
+#line 22 "work.l"
 {if(flag == 1) return  T_a;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 22 "work.l"
+#line 23 "work.l"
 {if(flag == 1) return  T_b;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "work.l"
+#line 24 "work.l"
 {if(flag == 1) return  T_blockquote;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "work.l"
+#line 25 "work.l"
 {if(flag == 1) return T_body;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "work.l"
+#line 26 "work.l"
 {if(flag == 1) return  T_br;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "work.l"
+#line 27 "work.l"
 {if(flag == 1) return  T_button;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 27 "work.l"
+#line 28 "work.l"
 {if(flag == 1) return  T_caption;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 28 "work.l"
+#line 29 "work.l"
 {if(flag == 1) return  T_code;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 29 "work.l"
+#line 30 "work.l"
 {if(flag == 1) return  T_div;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 30 "work.l"
+#line 31 "work.l"
 {if(flag == 1) return  T_dl;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 31 "work.l"
+#line 32 "work.l"
 {if(flag == 1) return  T_dt;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "work.l"
+#line 33 "work.l"
 {if(flag == 1) return  T_dd;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 33 "work.l"
+#line 34 "work.l"
 {if(flag == 1) return  T_em;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 34 "work.l"
+#line 35 "work.l"
 {if(flag == 1) return  T_embed;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 35 "work.l"
+#line 36 "work.l"
 {if(flag == 1) return  T_footer;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 36 "work.l"
+#line 37 "work.l"
 {if(flag == 1) return  T_form;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 37 "work.l"
+#line 38 "work.l"
 {if(flag == 1) return  T_h1;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 38 "work.l"
+#line 39 "work.l"
 {if(flag == 1) return  T_h2;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 39 "work.l"
+#line 40 "work.l"
 {if(flag == 1) return  T_h3;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 40 "work.l"
+#line 41 "work.l"
 {if(flag == 1) return  T_h4;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 41 "work.l"
+#line 42 "work.l"
 {if(flag == 1) return  T_h5;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 42 "work.l"
+#line 43 "work.l"
 {if(flag == 1) return  T_h6;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 43 "work.l"
+#line 44 "work.l"
 {if(flag == 1) return  T_head;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 44 "work.l"
+#line 45 "work.l"
 {if(flag == 1) return  T_header;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 45 "work.l"
+#line 46 "work.l"
 {if(flag == 1) return  T_hr;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 46 "work.l"
+#line 47 "work.l"
 {if(flag == 1) return  T_html;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 47 "work.l"
+#line 48 "work.l"
 {if(flag == 1) return  T_img;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 48 "work.l"
+#line 49 "work.l"
 {if(flag == 1) return  T_input;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 49 "work.l"
+#line 50 "work.l"
 {if(flag == 1) return  T_li;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 50 "work.l"
+#line 51 "work.l"
 {if(flag == 1) return  T_link;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 51 "work.l"
+#line 52 "work.l"
 {if(flag == 1) return  T_meta;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 52 "work.l"
+#line 53 "work.l"
 {if(flag == 1) return  T_object;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 53 "work.l"
+#line 54 "work.l"
 {if(flag == 1) return  T_ol;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 54 "work.l"
+#line 55 "work.l"
 {if(flag == 1) return  T_option;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 55 "work.l"
+#line 56 "work.l"
 {if(flag == 1) return  T_p;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 56 "work.l"
+#line 57 "work.l"
 {if(flag == 1) return  T_pre;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 57 "work.l"
+#line 58 "work.l"
 {if(flag == 1) return  T_script;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 58 "work.l"
+#line 59 "work.l"
 {if(flag == 1) return  T_span;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 59 "work.l"
+#line 60 "work.l"
 {if(flag == 1) return  T_strong;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 60 "work.l"
+#line 61 "work.l"
 {if(flag == 1) return  T_style;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 61 "work.l"
+#line 62 "work.l"
 {if(flag == 1) return  T_select;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 62 "work.l"
+#line 63 "work.l"
 {if(flag == 1) return  T_table;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 63 "work.l"
+#line 64 "work.l"
 {if(flag == 1) return  T_td;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 64 "work.l"
+#line 65 "work.l"
 {if(flag == 1) return  T_th;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 65 "work.l"
+#line 66 "work.l"
 {if(flag == 1) return  T_title;} 
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 66 "work.l"
+#line 67 "work.l"
 {if(flag == 1) return  T_tr;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 67 "work.l"
+#line 68 "work.l"
 {if(flag == 1) return  T_textarea;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 68 "work.l"
+#line 69 "work.l"
 {if(flag == 1) return  T_ul;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 69 "work.l"
+#line 70 "work.l"
 {if(flag == 1) return  T_DOCTYPE;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 70 "work.l"
+#line 71 "work.l"
 {yylval.str=strdup(yytext);return T_IDENT;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 71 "work.l"
+#line 72 "work.l"
 {yylval.str=strdup(yytext);return T_ATT;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 72 "work.l"
+#line 73 "work.l"
 {flag=1;return  T_Tag ;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 73 "work.l"
+#line 74 "work.l"
 {flag=0;return  T_TagClose;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 74 "work.l"
+#line 75 "work.l"
 {flag=1; return  T_FinalTag;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 75 "work.l"
+#line 76 "work.l"
 {flag=1;return  T_comment_open;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 76 "work.l"
+#line 77 "work.l"
 {flag=0;return  T_comment_close;}
 	YY_BREAK
 case 57:
 /* rule 57 can match eol */
 YY_RULE_SETUP
-#line 77 "work.l"
+#line 78 "work.l"
 ;
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 78 "work.l"
+#line 79 "work.l"
 fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno) ; /*cualquier otro caracter no es aceptado */
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 79 "work.l"
+#line 80 "work.l"
 ECHO;
 	YY_BREAK
-#line 1260 "lex.yy.c"
+#line 1291 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1617,6 +1648,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -1691,6 +1726,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		   
+    yylineno++;
+;
 
 	return c;
 }
@@ -2158,6 +2198,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -2250,7 +2293,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 79 "work.l"
+#line 80 "work.l"
 
 
 

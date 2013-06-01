@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <assert.h>
+extern yylineno;
 %}
 %union{
 	char *str;
@@ -243,4 +244,4 @@ comment :       T_comment_open body_content T_comment_close
 int main(){
  return yyparse();
 }
-yyerror (char *s) {return(stderr,"Error: Unrecognized character: %s at line: %d\n",yylval.str,yylineno ; }
+yyerror (char *s) {fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yylval.str,yylineno);}

@@ -5,6 +5,7 @@
 int flag = 0;/*valor default 0(fuera del tag tag) y 1( dentro del tag)*/
 %} 
 /*definiciones*/
+%option yylineno
 DocType !DOCTYPE
 Size size
 Char char
