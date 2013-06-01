@@ -68,9 +68,8 @@
 #include <stdio.h>
 #include <assert.h>
 
-
 /* Line 371 of yacc.c  */
-#line 74 "y.tab.c"
+#line 73 "y.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -225,7 +224,17 @@ extern int yydebug;
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+/* Line 387 of yacc.c  */
+#line 5 "work.y"
+
+	char *str;
+
+
+/* Line 387 of yacc.c  */
+#line 237 "y.tab.c"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -252,7 +261,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 256 "y.tab.c"
+#line 265 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -612,17 +621,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    13,    13,    21,    23,    27,    32,    37,    38,    39,
-      40,    41,    44,    47,    50,    54,    57,    61,    67,    67,
-      71,    71,    76,    76,    76,    76,    76,    76,    80,    80,
-      80,    80,    81,    81,    81,    81,    81,    81,    81,    81,
-      83,    87,    87,    87,    91,    91,    91,    95,    95,    95,
-      95,    98,    98,   101,   102,   104,   105,   107,   108,   110,
-     111,   113,   114,   116,   117,   121,   125,   126,   127,   131,
-     135,   139,   143,   144,   148,   148,   151,   153,   154,   157,
-     160,   164,   168,   169,   172,   174,   176,   181,   185,   188,
-     192,   193,   195,   198,   202,   205,   208,   208,   208,   211,
-     215,   218,   221,   223,   227,   230,   233,   236,   238
+       0,    15,    15,    23,    25,    29,    34,    39,    40,    41,
+      42,    43,    46,    49,    52,    56,    59,    63,    69,    69,
+      73,    73,    78,    78,    78,    78,    78,    78,    82,    82,
+      82,    82,    83,    83,    83,    83,    83,    83,    83,    83,
+      85,    89,    89,    89,    93,    93,    93,    97,    97,    97,
+      97,   100,   100,   103,   104,   106,   107,   109,   110,   112,
+     113,   115,   116,   118,   119,   123,   127,   128,   129,   133,
+     137,   141,   145,   146,   150,   150,   153,   155,   156,   159,
+     162,   166,   170,   171,   174,   176,   178,   183,   187,   190,
+     194,   195,   197,   200,   204,   207,   210,   210,   210,   213,
+     217,   220,   223,   225,   229,   232,   235,   238,   240
 };
 #endif
 
@@ -1791,7 +1800,7 @@ yyreduce:
     {
       
 /* Line 1792 of yacc.c  */
-#line 1795 "y.tab.c"
+#line 1804 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2023,9 +2032,9 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 241 "work.y"
+#line 242 "work.y"
 
-int main {
- return yyparse;
+int main(){
+ return yyparse();
 }
-yyerror char s { freturn(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno ; }
+yyerror (char *s) {return(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno ; }

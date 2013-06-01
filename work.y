@@ -1,8 +1,10 @@
 %{
 #include <stdio.h>
 #include <assert.h>
-
 %}
+%union{
+	char *str;
+}
 %token  T_a T_b T_blockquote T_body T_br T_button T_caption T_code T_div T_dl T_dt T_dd T_em T_embed T_footer T_form T_h1 
 %token  T_h2 T_h3 T_h4 T_h5 T_h6 T_head T_header T_hr T_html T_img T_input T_li T_link T_meta T_object T_ol T_option T_p 
 %token  T_pre T_script T_span T_strong T_style T_select T_table T_td T_th T_title T_tr T_textarea T_ul T_DOCTYPE  T_IDENT T_ATT 
@@ -237,9 +239,8 @@ object
         ;
 comment :       T_comment_open body_content T_comment_close 
 	;
-
 %%
-int main {
- return yyparse;
+int main(){
+ return yyparse();
 }
-yyerror char s { freturn(stderr,"Error: Unrecognized character: %s at line: %d\n",yytext,yylineno ; }
+yyerror (char *s) {return(stderr,"Error: Unrecognized character: %s at line: %d\n",yylval.str,yylineno ; }
