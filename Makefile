@@ -1,5 +1,5 @@
-work: lex.yy.o y.tab.o 
-  gcc -o work lex.yy.o y.tab.o -ly -ll
+work: lex.yy.o y.tab.o
+	gcc -o work lex.yy.o y.tab.o -ly -ll
 lex.yy.c: work.l y.tab.c
 	flex work.l
 y.tab.c: work.y

@@ -1,0 +1,4384 @@
+Grammar
+
+    0 $accept: document $end
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body footer T_FinalTag T_html T_TagClose
+
+    2 head: T_Tag T_head T_TagClose head_element T_IDENT
+    3     | head_element T_FinalTag T_head T_TagClose
+
+    4 header: T_Tag T_header T_TagClose block T_FinalTag T_header T_TagClose
+
+    5 footer: T_Tag T_footer T_TagClose block T_FinalTag T_footer T_TagClose
+
+    6 head_element: title
+    7             | script
+    8             | style
+    9             | META
+   10             | LINK
+
+   11 title: T_Tag T_title T_TagClose text T_FinalTag T_title T_TagClose
+
+   12 script: T_Tag T_script T_ATT T_TagClose text T_FinalTag T_script T_TagClose
+
+   13 META: T_Tag T_meta T_ATT T_TagClose
+
+   14 LINK: T_Tag T_link T_ATT T_TagClose
+
+   15 style: T_Tag T_style T_ATT T_TagClose text T_FinalTag T_style T_TagClose
+
+   16 body: T_Tag T_body T_ATT T_TagClose body_content T_FinalTag T_body T_TagClose
+
+   17 body_tag: heading
+   18         | block
+
+   19 body_content: body_tag
+   20             | text
+
+   21 heading: h1
+   22        | h2
+   23        | h3
+   24        | h4
+   25        | h5
+   26        | h6
+
+   27 block: paragraph
+   28      | list
+   29      | preformatted
+   30      | div
+   31      | blockquote
+   32      | HR
+   33      | table
+   34      | button
+   35      | span
+   36      | embed
+   37      | object
+   38      | comment
+
+   39 font: bold
+
+   40 phrase: emphasize
+   41       | strong
+   42       | code
+
+   43 special: anchor
+   44        | IMG
+   45        | BR
+
+   46 texT_Tag: font
+   47         | phrase
+   48         | special
+   49         | form
+
+   50 text: T_IDENT
+   51     | texT_Tag
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag T_h1 T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag T_h2 T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag T_h3 T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag T_h4 T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag T_h5 T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag T_h6 T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+
+   65 list: unordered_list
+   66     | ordered_list
+   67     | def_list
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose text T_FinalTag T_li T_TagClose
+   72          | T_Tag T_li T_ATT T_TagClose list T_FinalTag T_li T_TagClose
+
+   73 def_list_item: dt
+   74              | dd
+
+   75 dt: T_Tag T_dt T_TagClose text T_FinalTag T_dt T_TagClose
+
+   76 dd: T_Tag T_dd T_TagClose text T_FinalTag T_dd T_TagClose
+   77   | T_Tag T_dd T_TagClose block T_FinalTag T_dd T_TagClose
+
+   78 preformatted: T_Tag T_pre T_TagClose text T_FinalTag T_pre T_TagClose
+
+   79 div: T_Tag T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+
+   81 form: T_Tag T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+
+   83 BR: T_Tag T_br T_ATT T_TagClose
+
+   84 HR: T_Tag T_hr T_ATT T_TagClose
+
+   85 IMG: T_Tag T_img T_ATT T_TagClose
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose text T_FinalTag T_caption T_TagClose
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose th_or_td T_FinalTag T_tr T_TagClose
+
+   89 th_or_td: T_Tag T_th T_TagClose body_content T_FinalTag T_th T_TagClose
+   90         | T_Tag T_td T_TagClose body_content T_FinalTag T_td T_TagClose
+
+   91 bold: T_Tag T_b T_TagClose text T_FinalTag T_b T_TagClose
+
+   92 emphasize: T_Tag T_em T_TagClose text T_FinalTag T_em T_TagClose
+
+   93 strong: T_Tag T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+
+   94 code: T_Tag T_code T_TagClose text T_FinalTag T_code T_TagClose
+
+   95 form_field: INPUT
+   96           | select
+   97           | textarea
+
+   98 select: T_Tag T_select T_ATT T_TagClose select_option T_FinalTag T_select T_TagClose
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose text T_FinalTag T_option T_TagClose
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose text T_FinalTag T_textarea T_TagClose
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+
+  102 INPUT: T_Tag T_input T_ATT T_TagClose
+
+  103 button: T_Tag T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+
+  104 span: T_Tag T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+
+  106 object: T_Tag T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+  107 comment: T_comment_open body_content T_comment_close
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+T_a (258) 101
+T_b (259) 91
+T_blockquote (260) 80
+T_body (261) 16
+T_br (262) 83
+T_button (263) 103
+T_caption (264) 87
+T_code (265) 94
+T_div (266) 79
+T_dl (267) 70
+T_dt (268) 75
+T_dd (269) 76 77
+T_em (270) 92
+T_embed (271) 105
+T_footer (272) 5
+T_form (273) 81 82
+T_h1 (274) 52 53
+T_h2 (275) 54 55
+T_h3 (276) 56 57
+T_h4 (277) 58 59
+T_h5 (278) 60 61
+T_h6 (279) 62 63
+T_head (280) 2 3
+T_header (281) 4
+T_hr (282) 84
+T_html (283) 1
+T_img (284) 85
+T_input (285) 102
+T_li (286) 71 72
+T_link (287) 14
+T_meta (288) 13
+T_object (289) 106
+T_ol (290) 69
+T_option (291) 99
+T_p (292) 64
+T_pre (293) 78
+T_script (294) 12
+T_span (295) 104
+T_strong (296) 93
+T_style (297) 15
+T_select (298) 98
+T_table (299) 86
+T_td (300) 90
+T_th (301) 89
+T_title (302) 11
+T_tr (303) 88
+T_textarea (304) 100
+T_ul (305) 68
+T_DOCTYPE (306) 1
+T_IDENT (307) 2 50
+T_ATT (308) 12 13 14 15 16 52 53 54 55 56 57 58 59 60 61 62 63 64 68
+    69 70 71 72 79 80 81 82 83 84 85 86 87 88 98 99 100 101 102 103
+    104 105 106
+T_Tag (309) 1 2 4 5 11 12 13 14 15 16 52 53 54 55 56 57 58 59 60 61
+    62 63 64 68 69 70 71 72 75 76 77 78 79 80 81 82 83 84 85 86 87
+    88 89 90 91 92 93 94 98 99 100 101 102 103 104 105 106
+T_TagClose (310) 1 2 3 4 5 11 12 13 14 15 16 52 53 54 55 56 57 58 59
+    60 61 62 63 64 68 69 70 71 72 75 76 77 78 79 80 81 82 83 84 85
+    86 87 88 89 90 91 92 93 94 98 99 100 101 102 103 104 105 106
+T_FinalTag (311) 1 3 4 5 11 12 15 16 52 53 54 55 56 57 58 59 60 61
+    62 63 64 68 69 70 71 72 75 76 77 78 79 80 81 82 86 87 88 89 90
+    91 92 93 94 98 99 100 101 103 104 105 106
+T_comment_open (312) 107
+T_comment_close (313) 107
+
+
+Nonterminals, with rules where they appear
+
+$accept (59)
+    on left: 0
+document (60)
+    on left: 1, on right: 0
+head (61)
+    on left: 2 3, on right: 1
+header (62)
+    on left: 4, on right: 1
+footer (63)
+    on left: 5, on right: 1
+head_element (64)
+    on left: 6 7 8 9 10, on right: 2 3
+title (65)
+    on left: 11, on right: 6
+script (66)
+    on left: 12, on right: 7
+META (67)
+    on left: 13, on right: 9
+LINK (68)
+    on left: 14, on right: 10
+style (69)
+    on left: 15, on right: 8
+body (70)
+    on left: 16, on right: 1
+body_tag (71)
+    on left: 17 18, on right: 19
+body_content (72)
+    on left: 19 20, on right: 16 79 82 89 90 107
+heading (73)
+    on left: 21 22 23 24 25 26, on right: 17
+block (74)
+    on left: 27 28 29 30 31 32 33 34 35 36 37 38, on right: 4 5 18
+    52 54 56 58 60 62 77
+font (75)
+    on left: 39, on right: 46
+phrase (76)
+    on left: 40 41 42, on right: 47
+special (77)
+    on left: 43 44 45, on right: 48
+texT_Tag (78)
+    on left: 46 47 48 49, on right: 51
+text (79)
+    on left: 50 51, on right: 11 12 15 20 53 55 57 59 61 63 64 71 75
+    76 78 87 91 92 93 94 99 100 101 103 104 105 106
+h1 (80)
+    on left: 52 53, on right: 21
+h2 (81)
+    on left: 54 55, on right: 22
+h3 (82)
+    on left: 56 57, on right: 23
+h4 (83)
+    on left: 58 59, on right: 24
+h5 (84)
+    on left: 60 61, on right: 25
+h6 (85)
+    on left: 62 63, on right: 26
+paragraph (86)
+    on left: 64, on right: 27 80
+list (87)
+    on left: 65 66 67, on right: 28 72
+unordered_list (88)
+    on left: 68, on right: 65
+ordered_list (89)
+    on left: 69, on right: 66
+def_list (90)
+    on left: 70, on right: 67
+list_item (91)
+    on left: 71 72, on right: 68 69
+def_list_item (92)
+    on left: 73 74, on right: 70
+dt (93)
+    on left: 75, on right: 73
+dd (94)
+    on left: 76 77, on right: 74
+preformatted (95)
+    on left: 78, on right: 29
+div (96)
+    on left: 79, on right: 30
+blockquote (97)
+    on left: 80, on right: 31
+form (98)
+    on left: 81 82, on right: 49
+BR (99)
+    on left: 83, on right: 45
+HR (100)
+    on left: 84, on right: 32
+IMG (101)
+    on left: 85, on right: 44
+table (102)
+    on left: 86, on right: 33
+caption (103)
+    on left: 87, on right: 86
+tr (104)
+    on left: 88, on right: 86
+th_or_td (105)
+    on left: 89 90, on right: 88
+bold (106)
+    on left: 91, on right: 39
+emphasize (107)
+    on left: 92, on right: 40
+strong (108)
+    on left: 93, on right: 41
+code (109)
+    on left: 94, on right: 42
+form_field (110)
+    on left: 95 96 97, on right: 81
+select (111)
+    on left: 98, on right: 96
+select_option (112)
+    on left: 99, on right: 98
+textarea (113)
+    on left: 100, on right: 97
+anchor (114)
+    on left: 101, on right: 43
+INPUT (115)
+    on left: 102, on right: 95
+button (116)
+    on left: 103, on right: 34
+span (117)
+    on left: 104, on right: 35
+embed (118)
+    on left: 105, on right: 36
+object (119)
+    on left: 106, on right: 37
+comment (120)
+    on left: 107, on right: 38
+
+
+State 0
+
+    0 $accept: . document $end
+
+    T_DOCTYPE  shift, and go to state 1
+
+    document  go to state 2
+
+
+State 1
+
+    1 document: T_DOCTYPE . header T_Tag T_html T_TagClose head body footer T_FinalTag T_html T_TagClose
+
+    T_Tag  shift, and go to state 3
+
+    header  go to state 4
+
+
+State 2
+
+    0 $accept: document . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    4 header: T_Tag . T_header T_TagClose block T_FinalTag T_header T_TagClose
+
+    T_header  shift, and go to state 6
+
+
+State 4
+
+    1 document: T_DOCTYPE header . T_Tag T_html T_TagClose head body footer T_FinalTag T_html T_TagClose
+
+    T_Tag  shift, and go to state 7
+
+
+State 5
+
+    0 $accept: document $end .
+
+    $default  accept
+
+
+State 6
+
+    4 header: T_Tag T_header . T_TagClose block T_FinalTag T_header T_TagClose
+
+    T_TagClose  shift, and go to state 8
+
+
+State 7
+
+    1 document: T_DOCTYPE header T_Tag . T_html T_TagClose head body footer T_FinalTag T_html T_TagClose
+
+    T_html  shift, and go to state 9
+
+
+State 8
+
+    4 header: T_Tag T_header T_TagClose . block T_FinalTag T_header T_TagClose
+
+    T_Tag           shift, and go to state 10
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 12
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    HR              go to state 21
+    table           go to state 22
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 9
+
+    1 document: T_DOCTYPE header T_Tag T_html . T_TagClose head body footer T_FinalTag T_html T_TagClose
+
+    T_TagClose  shift, and go to state 28
+
+
+State 10
+
+   64 paragraph: T_Tag . T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+   68 unordered_list: T_Tag . T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+   69 ordered_list: T_Tag . T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+   70 def_list: T_Tag . T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+   78 preformatted: T_Tag . T_pre T_TagClose text T_FinalTag T_pre T_TagClose
+   79 div: T_Tag . T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+   80 blockquote: T_Tag . T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+   84 HR: T_Tag . T_hr T_ATT T_TagClose
+   86 table: T_Tag . T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+  103 button: T_Tag . T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+  104 span: T_Tag . T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+  105 embed: T_Tag . T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+  106 object: T_Tag . T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_blockquote  shift, and go to state 29
+    T_button      shift, and go to state 30
+    T_div         shift, and go to state 31
+    T_dl          shift, and go to state 32
+    T_embed       shift, and go to state 33
+    T_hr          shift, and go to state 34
+    T_object      shift, and go to state 35
+    T_ol          shift, and go to state 36
+    T_p           shift, and go to state 37
+    T_pre         shift, and go to state 38
+    T_span        shift, and go to state 39
+    T_table       shift, and go to state 40
+    T_ul          shift, and go to state 41
+
+
+State 11
+
+  107 comment: T_comment_open . body_content T_comment_close
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 43
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 45
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 12
+
+    4 header: T_Tag T_header T_TagClose block . T_FinalTag T_header T_TagClose
+
+    T_FinalTag  shift, and go to state 67
+
+
+State 13
+
+   27 block: paragraph .
+
+    $default  reduce using rule 27 (block)
+
+
+State 14
+
+   28 block: list .
+
+    $default  reduce using rule 28 (block)
+
+
+State 15
+
+   65 list: unordered_list .
+
+    $default  reduce using rule 65 (list)
+
+
+State 16
+
+   66 list: ordered_list .
+
+    $default  reduce using rule 66 (list)
+
+
+State 17
+
+   67 list: def_list .
+
+    $default  reduce using rule 67 (list)
+
+
+State 18
+
+   29 block: preformatted .
+
+    $default  reduce using rule 29 (block)
+
+
+State 19
+
+   30 block: div .
+
+    $default  reduce using rule 30 (block)
+
+
+State 20
+
+   31 block: blockquote .
+
+    $default  reduce using rule 31 (block)
+
+
+State 21
+
+   32 block: HR .
+
+    $default  reduce using rule 32 (block)
+
+
+State 22
+
+   33 block: table .
+
+    $default  reduce using rule 33 (block)
+
+
+State 23
+
+   34 block: button .
+
+    $default  reduce using rule 34 (block)
+
+
+State 24
+
+   35 block: span .
+
+    $default  reduce using rule 35 (block)
+
+
+State 25
+
+   36 block: embed .
+
+    $default  reduce using rule 36 (block)
+
+
+State 26
+
+   37 block: object .
+
+    $default  reduce using rule 37 (block)
+
+
+State 27
+
+   38 block: comment .
+
+    $default  reduce using rule 38 (block)
+
+
+State 28
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose . head body footer T_FinalTag T_html T_TagClose
+
+    T_Tag  shift, and go to state 68
+
+    head          go to state 69
+    head_element  go to state 70
+    title         go to state 71
+    script        go to state 72
+    META          go to state 73
+    LINK          go to state 74
+    style         go to state 75
+
+
+State 29
+
+   80 blockquote: T_Tag T_blockquote . T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+
+    T_ATT  shift, and go to state 76
+
+
+State 30
+
+  103 button: T_Tag T_button . T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+
+    T_ATT  shift, and go to state 77
+
+
+State 31
+
+   79 div: T_Tag T_div . T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+
+    T_ATT  shift, and go to state 78
+
+
+State 32
+
+   70 def_list: T_Tag T_dl . T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+
+    T_ATT  shift, and go to state 79
+
+
+State 33
+
+  105 embed: T_Tag T_embed . T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+
+    T_ATT  shift, and go to state 80
+
+
+State 34
+
+   84 HR: T_Tag T_hr . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 81
+
+
+State 35
+
+  106 object: T_Tag T_object . T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_ATT  shift, and go to state 82
+
+
+State 36
+
+   69 ordered_list: T_Tag T_ol . T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+
+    T_ATT  shift, and go to state 83
+
+
+State 37
+
+   64 paragraph: T_Tag T_p . T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+
+    T_ATT  shift, and go to state 84
+
+
+State 38
+
+   78 preformatted: T_Tag T_pre . T_TagClose text T_FinalTag T_pre T_TagClose
+
+    T_TagClose  shift, and go to state 85
+
+
+State 39
+
+  104 span: T_Tag T_span . T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+
+    T_ATT  shift, and go to state 86
+
+
+State 40
+
+   86 table: T_Tag T_table . T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+
+    T_ATT  shift, and go to state 87
+
+
+State 41
+
+   68 unordered_list: T_Tag T_ul . T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+
+    T_ATT  shift, and go to state 88
+
+
+State 42
+
+   50 text: T_IDENT .
+
+    $default  reduce using rule 50 (text)
+
+
+State 43
+
+   52 h1: T_Tag . T_h1 T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag . T_h1 T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose
+   54 h2: T_Tag . T_h2 T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag . T_h2 T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose
+   56 h3: T_Tag . T_h3 T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag . T_h3 T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose
+   58 h4: T_Tag . T_h4 T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag . T_h4 T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose
+   60 h5: T_Tag . T_h5 T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag . T_h5 T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose
+   62 h6: T_Tag . T_h6 T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag . T_h6 T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose
+   64 paragraph: T_Tag . T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+   68 unordered_list: T_Tag . T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+   69 ordered_list: T_Tag . T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+   70 def_list: T_Tag . T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+   78 preformatted: T_Tag . T_pre T_TagClose text T_FinalTag T_pre T_TagClose
+   79 div: T_Tag . T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+   80 blockquote: T_Tag . T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+   81 form: T_Tag . T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag . T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+   83 BR: T_Tag . T_br T_ATT T_TagClose
+   84 HR: T_Tag . T_hr T_ATT T_TagClose
+   85 IMG: T_Tag . T_img T_ATT T_TagClose
+   86 table: T_Tag . T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+   91 bold: T_Tag . T_b T_TagClose text T_FinalTag T_b T_TagClose
+   92 emphasize: T_Tag . T_em T_TagClose text T_FinalTag T_em T_TagClose
+   93 strong: T_Tag . T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+   94 code: T_Tag . T_code T_TagClose text T_FinalTag T_code T_TagClose
+  101 anchor: T_Tag . T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+  103 button: T_Tag . T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+  104 span: T_Tag . T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+  105 embed: T_Tag . T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+  106 object: T_Tag . T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_a           shift, and go to state 89
+    T_b           shift, and go to state 90
+    T_blockquote  shift, and go to state 29
+    T_br          shift, and go to state 91
+    T_button      shift, and go to state 30
+    T_code        shift, and go to state 92
+    T_div         shift, and go to state 31
+    T_dl          shift, and go to state 32
+    T_em          shift, and go to state 93
+    T_embed       shift, and go to state 33
+    T_form        shift, and go to state 94
+    T_h1          shift, and go to state 95
+    T_h2          shift, and go to state 96
+    T_h3          shift, and go to state 97
+    T_h4          shift, and go to state 98
+    T_h5          shift, and go to state 99
+    T_h6          shift, and go to state 100
+    T_hr          shift, and go to state 34
+    T_img         shift, and go to state 101
+    T_object      shift, and go to state 35
+    T_ol          shift, and go to state 36
+    T_p           shift, and go to state 37
+    T_pre         shift, and go to state 38
+    T_span        shift, and go to state 39
+    T_strong      shift, and go to state 102
+    T_table       shift, and go to state 40
+    T_ul          shift, and go to state 41
+
+
+State 44
+
+   19 body_content: body_tag .
+
+    $default  reduce using rule 19 (body_content)
+
+
+State 45
+
+  107 comment: T_comment_open body_content . T_comment_close
+
+    T_comment_close  shift, and go to state 103
+
+
+State 46
+
+   17 body_tag: heading .
+
+    $default  reduce using rule 17 (body_tag)
+
+
+State 47
+
+   18 body_tag: block .
+
+    $default  reduce using rule 18 (body_tag)
+
+
+State 48
+
+   46 texT_Tag: font .
+
+    $default  reduce using rule 46 (texT_Tag)
+
+
+State 49
+
+   47 texT_Tag: phrase .
+
+    $default  reduce using rule 47 (texT_Tag)
+
+
+State 50
+
+   48 texT_Tag: special .
+
+    $default  reduce using rule 48 (texT_Tag)
+
+
+State 51
+
+   51 text: texT_Tag .
+
+    $default  reduce using rule 51 (text)
+
+
+State 52
+
+   20 body_content: text .
+
+    $default  reduce using rule 20 (body_content)
+
+
+State 53
+
+   21 heading: h1 .
+
+    $default  reduce using rule 21 (heading)
+
+
+State 54
+
+   22 heading: h2 .
+
+    $default  reduce using rule 22 (heading)
+
+
+State 55
+
+   23 heading: h3 .
+
+    $default  reduce using rule 23 (heading)
+
+
+State 56
+
+   24 heading: h4 .
+
+    $default  reduce using rule 24 (heading)
+
+
+State 57
+
+   25 heading: h5 .
+
+    $default  reduce using rule 25 (heading)
+
+
+State 58
+
+   26 heading: h6 .
+
+    $default  reduce using rule 26 (heading)
+
+
+State 59
+
+   49 texT_Tag: form .
+
+    $default  reduce using rule 49 (texT_Tag)
+
+
+State 60
+
+   45 special: BR .
+
+    $default  reduce using rule 45 (special)
+
+
+State 61
+
+   44 special: IMG .
+
+    $default  reduce using rule 44 (special)
+
+
+State 62
+
+   39 font: bold .
+
+    $default  reduce using rule 39 (font)
+
+
+State 63
+
+   40 phrase: emphasize .
+
+    $default  reduce using rule 40 (phrase)
+
+
+State 64
+
+   41 phrase: strong .
+
+    $default  reduce using rule 41 (phrase)
+
+
+State 65
+
+   42 phrase: code .
+
+    $default  reduce using rule 42 (phrase)
+
+
+State 66
+
+   43 special: anchor .
+
+    $default  reduce using rule 43 (special)
+
+
+State 67
+
+    4 header: T_Tag T_header T_TagClose block T_FinalTag . T_header T_TagClose
+
+    T_header  shift, and go to state 104
+
+
+State 68
+
+    2 head: T_Tag . T_head T_TagClose head_element T_IDENT
+   11 title: T_Tag . T_title T_TagClose text T_FinalTag T_title T_TagClose
+   12 script: T_Tag . T_script T_ATT T_TagClose text T_FinalTag T_script T_TagClose
+   13 META: T_Tag . T_meta T_ATT T_TagClose
+   14 LINK: T_Tag . T_link T_ATT T_TagClose
+   15 style: T_Tag . T_style T_ATT T_TagClose text T_FinalTag T_style T_TagClose
+
+    T_head    shift, and go to state 105
+    T_link    shift, and go to state 106
+    T_meta    shift, and go to state 107
+    T_script  shift, and go to state 108
+    T_style   shift, and go to state 109
+    T_title   shift, and go to state 110
+
+
+State 69
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head . body footer T_FinalTag T_html T_TagClose
+
+    T_Tag  shift, and go to state 111
+
+    body  go to state 112
+
+
+State 70
+
+    3 head: head_element . T_FinalTag T_head T_TagClose
+
+    T_FinalTag  shift, and go to state 113
+
+
+State 71
+
+    6 head_element: title .
+
+    $default  reduce using rule 6 (head_element)
+
+
+State 72
+
+    7 head_element: script .
+
+    $default  reduce using rule 7 (head_element)
+
+
+State 73
+
+    9 head_element: META .
+
+    $default  reduce using rule 9 (head_element)
+
+
+State 74
+
+   10 head_element: LINK .
+
+    $default  reduce using rule 10 (head_element)
+
+
+State 75
+
+    8 head_element: style .
+
+    $default  reduce using rule 8 (head_element)
+
+
+State 76
+
+   80 blockquote: T_Tag T_blockquote T_ATT . T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+
+    T_TagClose  shift, and go to state 114
+
+
+State 77
+
+  103 button: T_Tag T_button T_ATT . T_TagClose text T_FinalTag T_button T_TagClose
+
+    T_TagClose  shift, and go to state 115
+
+
+State 78
+
+   79 div: T_Tag T_div T_ATT . T_TagClose body_content T_FinalTag T_div T_TagClose
+
+    T_TagClose  shift, and go to state 116
+
+
+State 79
+
+   70 def_list: T_Tag T_dl T_ATT . T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+
+    T_TagClose  shift, and go to state 117
+
+
+State 80
+
+  105 embed: T_Tag T_embed T_ATT . T_TagClose text T_FinalTag T_embed T_TagClose
+
+    T_TagClose  shift, and go to state 118
+
+
+State 81
+
+   84 HR: T_Tag T_hr T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 119
+
+
+State 82
+
+  106 object: T_Tag T_object T_ATT . T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_TagClose  shift, and go to state 120
+
+
+State 83
+
+   69 ordered_list: T_Tag T_ol T_ATT . T_TagClose list_item T_FinalTag T_ol T_TagClose
+
+    T_TagClose  shift, and go to state 121
+
+
+State 84
+
+   64 paragraph: T_Tag T_p T_ATT . T_TagClose text T_FinalTag T_p T_TagClose
+
+    T_TagClose  shift, and go to state 122
+
+
+State 85
+
+   78 preformatted: T_Tag T_pre T_TagClose . text T_FinalTag T_pre T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 124
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 86
+
+  104 span: T_Tag T_span T_ATT . T_TagClose text T_FinalTag T_span T_TagClose
+
+    T_TagClose  shift, and go to state 125
+
+
+State 87
+
+   86 table: T_Tag T_table T_ATT . T_TagClose caption tr T_FinalTag T_table T_TagClose
+
+    T_TagClose  shift, and go to state 126
+
+
+State 88
+
+   68 unordered_list: T_Tag T_ul T_ATT . T_TagClose list_item T_FinalTag T_ul T_TagClose
+
+    T_TagClose  shift, and go to state 127
+
+
+State 89
+
+  101 anchor: T_Tag T_a . T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+
+    T_ATT  shift, and go to state 128
+
+
+State 90
+
+   91 bold: T_Tag T_b . T_TagClose text T_FinalTag T_b T_TagClose
+
+    T_TagClose  shift, and go to state 129
+
+
+State 91
+
+   83 BR: T_Tag T_br . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 130
+
+
+State 92
+
+   94 code: T_Tag T_code . T_TagClose text T_FinalTag T_code T_TagClose
+
+    T_TagClose  shift, and go to state 131
+
+
+State 93
+
+   92 emphasize: T_Tag T_em . T_TagClose text T_FinalTag T_em T_TagClose
+
+    T_TagClose  shift, and go to state 132
+
+
+State 94
+
+   81 form: T_Tag T_form . T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag T_form . T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+
+    T_ATT  shift, and go to state 133
+
+
+State 95
+
+   52 h1: T_Tag T_h1 . T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag T_h1 . T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose
+
+    T_ATT  shift, and go to state 134
+
+
+State 96
+
+   54 h2: T_Tag T_h2 . T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag T_h2 . T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose
+
+    T_ATT  shift, and go to state 135
+
+
+State 97
+
+   56 h3: T_Tag T_h3 . T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag T_h3 . T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose
+
+    T_ATT  shift, and go to state 136
+
+
+State 98
+
+   58 h4: T_Tag T_h4 . T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag T_h4 . T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose
+
+    T_ATT  shift, and go to state 137
+
+
+State 99
+
+   60 h5: T_Tag T_h5 . T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag T_h5 . T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose
+
+    T_ATT  shift, and go to state 138
+
+
+State 100
+
+   62 h6: T_Tag T_h6 . T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag T_h6 . T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose
+
+    T_ATT  shift, and go to state 139
+
+
+State 101
+
+   85 IMG: T_Tag T_img . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 140
+
+
+State 102
+
+   93 strong: T_Tag T_strong . T_TagClose text T_FinalTag T_strong T_TagClose
+
+    T_TagClose  shift, and go to state 141
+
+
+State 103
+
+  107 comment: T_comment_open body_content T_comment_close .
+
+    $default  reduce using rule 107 (comment)
+
+
+State 104
+
+    4 header: T_Tag T_header T_TagClose block T_FinalTag T_header . T_TagClose
+
+    T_TagClose  shift, and go to state 142
+
+
+State 105
+
+    2 head: T_Tag T_head . T_TagClose head_element T_IDENT
+
+    T_TagClose  shift, and go to state 143
+
+
+State 106
+
+   14 LINK: T_Tag T_link . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 144
+
+
+State 107
+
+   13 META: T_Tag T_meta . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 145
+
+
+State 108
+
+   12 script: T_Tag T_script . T_ATT T_TagClose text T_FinalTag T_script T_TagClose
+
+    T_ATT  shift, and go to state 146
+
+
+State 109
+
+   15 style: T_Tag T_style . T_ATT T_TagClose text T_FinalTag T_style T_TagClose
+
+    T_ATT  shift, and go to state 147
+
+
+State 110
+
+   11 title: T_Tag T_title . T_TagClose text T_FinalTag T_title T_TagClose
+
+    T_TagClose  shift, and go to state 148
+
+
+State 111
+
+   16 body: T_Tag . T_body T_ATT T_TagClose body_content T_FinalTag T_body T_TagClose
+
+    T_body  shift, and go to state 149
+
+
+State 112
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body . footer T_FinalTag T_html T_TagClose
+
+    T_Tag  shift, and go to state 150
+
+    footer  go to state 151
+
+
+State 113
+
+    3 head: head_element T_FinalTag . T_head T_TagClose
+
+    T_head  shift, and go to state 152
+
+
+State 114
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose . paragraph T_FinalTag T_blockquote T_TagClose
+
+    T_Tag  shift, and go to state 153
+
+    paragraph  go to state 154
+
+
+State 115
+
+  103 button: T_Tag T_button T_ATT T_TagClose . text T_FinalTag T_button T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 155
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 116
+
+   79 div: T_Tag T_div T_ATT T_TagClose . body_content T_FinalTag T_div T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 43
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 156
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 117
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose . def_list_item T_FinalTag T_dl T_TagClose
+
+    T_Tag  shift, and go to state 157
+
+    def_list_item  go to state 158
+    dt             go to state 159
+    dd             go to state 160
+
+
+State 118
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose . text T_FinalTag T_embed T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 161
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 119
+
+   84 HR: T_Tag T_hr T_ATT T_TagClose .
+
+    $default  reduce using rule 84 (HR)
+
+
+State 120
+
+  106 object: T_Tag T_object T_ATT T_TagClose . text T_FinalTag T_object T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 162
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 121
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose . list_item T_FinalTag T_ol T_TagClose
+
+    T_Tag  shift, and go to state 163
+
+    list_item  go to state 164
+
+
+State 122
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose . text T_FinalTag T_p T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 165
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 123
+
+   81 form: T_Tag . T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag . T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+   83 BR: T_Tag . T_br T_ATT T_TagClose
+   85 IMG: T_Tag . T_img T_ATT T_TagClose
+   91 bold: T_Tag . T_b T_TagClose text T_FinalTag T_b T_TagClose
+   92 emphasize: T_Tag . T_em T_TagClose text T_FinalTag T_em T_TagClose
+   93 strong: T_Tag . T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+   94 code: T_Tag . T_code T_TagClose text T_FinalTag T_code T_TagClose
+  101 anchor: T_Tag . T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+
+    T_a       shift, and go to state 89
+    T_b       shift, and go to state 90
+    T_br      shift, and go to state 91
+    T_code    shift, and go to state 92
+    T_em      shift, and go to state 93
+    T_form    shift, and go to state 94
+    T_img     shift, and go to state 101
+    T_strong  shift, and go to state 102
+
+
+State 124
+
+   78 preformatted: T_Tag T_pre T_TagClose text . T_FinalTag T_pre T_TagClose
+
+    T_FinalTag  shift, and go to state 166
+
+
+State 125
+
+  104 span: T_Tag T_span T_ATT T_TagClose . text T_FinalTag T_span T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 167
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 126
+
+   86 table: T_Tag T_table T_ATT T_TagClose . caption tr T_FinalTag T_table T_TagClose
+
+    T_Tag  shift, and go to state 168
+
+    caption  go to state 169
+
+
+State 127
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose . list_item T_FinalTag T_ul T_TagClose
+
+    T_Tag  shift, and go to state 163
+
+    list_item  go to state 170
+
+
+State 128
+
+  101 anchor: T_Tag T_a T_ATT . T_TagClose text T_FinalTag T_a T_TagClose
+
+    T_TagClose  shift, and go to state 171
+
+
+State 129
+
+   91 bold: T_Tag T_b T_TagClose . text T_FinalTag T_b T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 172
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 130
+
+   83 BR: T_Tag T_br T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 173
+
+
+State 131
+
+   94 code: T_Tag T_code T_TagClose . text T_FinalTag T_code T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 174
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 132
+
+   92 emphasize: T_Tag T_em T_TagClose . text T_FinalTag T_em T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 175
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 133
+
+   81 form: T_Tag T_form T_ATT . T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag T_form T_ATT . T_TagClose body_content T_FinalTag T_form T_TagClose
+
+    T_TagClose  shift, and go to state 176
+
+
+State 134
+
+   52 h1: T_Tag T_h1 T_ATT . T_TagClose block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag T_h1 T_ATT . T_TagClose text T_FinalTag T_h1 T_TagClose
+
+    T_TagClose  shift, and go to state 177
+
+
+State 135
+
+   54 h2: T_Tag T_h2 T_ATT . T_TagClose block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag T_h2 T_ATT . T_TagClose text T_FinalTag T_h2 T_TagClose
+
+    T_TagClose  shift, and go to state 178
+
+
+State 136
+
+   56 h3: T_Tag T_h3 T_ATT . T_TagClose block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag T_h3 T_ATT . T_TagClose text T_FinalTag T_h3 T_TagClose
+
+    T_TagClose  shift, and go to state 179
+
+
+State 137
+
+   58 h4: T_Tag T_h4 T_ATT . T_TagClose block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag T_h4 T_ATT . T_TagClose text T_FinalTag T_h4 T_TagClose
+
+    T_TagClose  shift, and go to state 180
+
+
+State 138
+
+   60 h5: T_Tag T_h5 T_ATT . T_TagClose block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag T_h5 T_ATT . T_TagClose text T_FinalTag T_h5 T_TagClose
+
+    T_TagClose  shift, and go to state 181
+
+
+State 139
+
+   62 h6: T_Tag T_h6 T_ATT . T_TagClose block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag T_h6 T_ATT . T_TagClose text T_FinalTag T_h6 T_TagClose
+
+    T_TagClose  shift, and go to state 182
+
+
+State 140
+
+   85 IMG: T_Tag T_img T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 183
+
+
+State 141
+
+   93 strong: T_Tag T_strong T_TagClose . text T_FinalTag T_strong T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 184
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 142
+
+    4 header: T_Tag T_header T_TagClose block T_FinalTag T_header T_TagClose .
+
+    $default  reduce using rule 4 (header)
+
+
+State 143
+
+    2 head: T_Tag T_head T_TagClose . head_element T_IDENT
+
+    T_Tag  shift, and go to state 185
+
+    head_element  go to state 186
+    title         go to state 71
+    script        go to state 72
+    META          go to state 73
+    LINK          go to state 74
+    style         go to state 75
+
+
+State 144
+
+   14 LINK: T_Tag T_link T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 187
+
+
+State 145
+
+   13 META: T_Tag T_meta T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 188
+
+
+State 146
+
+   12 script: T_Tag T_script T_ATT . T_TagClose text T_FinalTag T_script T_TagClose
+
+    T_TagClose  shift, and go to state 189
+
+
+State 147
+
+   15 style: T_Tag T_style T_ATT . T_TagClose text T_FinalTag T_style T_TagClose
+
+    T_TagClose  shift, and go to state 190
+
+
+State 148
+
+   11 title: T_Tag T_title T_TagClose . text T_FinalTag T_title T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 191
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 149
+
+   16 body: T_Tag T_body . T_ATT T_TagClose body_content T_FinalTag T_body T_TagClose
+
+    T_ATT  shift, and go to state 192
+
+
+State 150
+
+    5 footer: T_Tag . T_footer T_TagClose block T_FinalTag T_footer T_TagClose
+
+    T_footer  shift, and go to state 193
+
+
+State 151
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body footer . T_FinalTag T_html T_TagClose
+
+    T_FinalTag  shift, and go to state 194
+
+
+State 152
+
+    3 head: head_element T_FinalTag T_head . T_TagClose
+
+    T_TagClose  shift, and go to state 195
+
+
+State 153
+
+   64 paragraph: T_Tag . T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+
+    T_p  shift, and go to state 37
+
+
+State 154
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose paragraph . T_FinalTag T_blockquote T_TagClose
+
+    T_FinalTag  shift, and go to state 196
+
+
+State 155
+
+  103 button: T_Tag T_button T_ATT T_TagClose text . T_FinalTag T_button T_TagClose
+
+    T_FinalTag  shift, and go to state 197
+
+
+State 156
+
+   79 div: T_Tag T_div T_ATT T_TagClose body_content . T_FinalTag T_div T_TagClose
+
+    T_FinalTag  shift, and go to state 198
+
+
+State 157
+
+   75 dt: T_Tag . T_dt T_TagClose text T_FinalTag T_dt T_TagClose
+   76 dd: T_Tag . T_dd T_TagClose text T_FinalTag T_dd T_TagClose
+   77   | T_Tag . T_dd T_TagClose block T_FinalTag T_dd T_TagClose
+
+    T_dt  shift, and go to state 199
+    T_dd  shift, and go to state 200
+
+
+State 158
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose def_list_item . T_FinalTag T_dl T_TagClose
+
+    T_FinalTag  shift, and go to state 201
+
+
+State 159
+
+   73 def_list_item: dt .
+
+    $default  reduce using rule 73 (def_list_item)
+
+
+State 160
+
+   74 def_list_item: dd .
+
+    $default  reduce using rule 74 (def_list_item)
+
+
+State 161
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose text . T_FinalTag T_embed T_TagClose
+
+    T_FinalTag  shift, and go to state 202
+
+
+State 162
+
+  106 object: T_Tag T_object T_ATT T_TagClose text . T_FinalTag T_object T_TagClose
+
+    T_FinalTag  shift, and go to state 203
+
+
+State 163
+
+   71 list_item: T_Tag . T_li T_ATT T_TagClose text T_FinalTag T_li T_TagClose
+   72          | T_Tag . T_li T_ATT T_TagClose list T_FinalTag T_li T_TagClose
+
+    T_li  shift, and go to state 204
+
+
+State 164
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose list_item . T_FinalTag T_ol T_TagClose
+
+    T_FinalTag  shift, and go to state 205
+
+
+State 165
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose text . T_FinalTag T_p T_TagClose
+
+    T_FinalTag  shift, and go to state 206
+
+
+State 166
+
+   78 preformatted: T_Tag T_pre T_TagClose text T_FinalTag . T_pre T_TagClose
+
+    T_pre  shift, and go to state 207
+
+
+State 167
+
+  104 span: T_Tag T_span T_ATT T_TagClose text . T_FinalTag T_span T_TagClose
+
+    T_FinalTag  shift, and go to state 208
+
+
+State 168
+
+   87 caption: T_Tag . T_caption T_ATT T_TagClose text T_FinalTag T_caption T_TagClose
+
+    T_caption  shift, and go to state 209
+
+
+State 169
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption . tr T_FinalTag T_table T_TagClose
+
+    T_Tag  shift, and go to state 210
+
+    tr  go to state 211
+
+
+State 170
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose list_item . T_FinalTag T_ul T_TagClose
+
+    T_FinalTag  shift, and go to state 212
+
+
+State 171
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose . text T_FinalTag T_a T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 213
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 172
+
+   91 bold: T_Tag T_b T_TagClose text . T_FinalTag T_b T_TagClose
+
+    T_FinalTag  shift, and go to state 214
+
+
+State 173
+
+   83 BR: T_Tag T_br T_ATT T_TagClose .
+
+    $default  reduce using rule 83 (BR)
+
+
+State 174
+
+   94 code: T_Tag T_code T_TagClose text . T_FinalTag T_code T_TagClose
+
+    T_FinalTag  shift, and go to state 215
+
+
+State 175
+
+   92 emphasize: T_Tag T_em T_TagClose text . T_FinalTag T_em T_TagClose
+
+    T_FinalTag  shift, and go to state 216
+
+
+State 176
+
+   81 form: T_Tag T_form T_ATT T_TagClose . form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag T_form T_ATT T_TagClose . body_content T_FinalTag T_form T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 217
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 218
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    form_field      go to state 219
+    select          go to state 220
+    textarea        go to state 221
+    anchor          go to state 66
+    INPUT           go to state 222
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 177
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose . block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag T_h1 T_ATT T_TagClose . text T_FinalTag T_h1 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 224
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 225
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 178
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose . block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag T_h2 T_ATT T_TagClose . text T_FinalTag T_h2 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 226
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 227
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 179
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose . block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag T_h3 T_ATT T_TagClose . text T_FinalTag T_h3 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 228
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 229
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 180
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose . block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag T_h4 T_ATT T_TagClose . text T_FinalTag T_h4 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 230
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 231
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 181
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose . block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag T_h5 T_ATT T_TagClose . text T_FinalTag T_h5 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 232
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 233
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 182
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose . block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag T_h6 T_ATT T_TagClose . text T_FinalTag T_h6 T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 234
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 235
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 183
+
+   85 IMG: T_Tag T_img T_ATT T_TagClose .
+
+    $default  reduce using rule 85 (IMG)
+
+
+State 184
+
+   93 strong: T_Tag T_strong T_TagClose text . T_FinalTag T_strong T_TagClose
+
+    T_FinalTag  shift, and go to state 236
+
+
+State 185
+
+   11 title: T_Tag . T_title T_TagClose text T_FinalTag T_title T_TagClose
+   12 script: T_Tag . T_script T_ATT T_TagClose text T_FinalTag T_script T_TagClose
+   13 META: T_Tag . T_meta T_ATT T_TagClose
+   14 LINK: T_Tag . T_link T_ATT T_TagClose
+   15 style: T_Tag . T_style T_ATT T_TagClose text T_FinalTag T_style T_TagClose
+
+    T_link    shift, and go to state 106
+    T_meta    shift, and go to state 107
+    T_script  shift, and go to state 108
+    T_style   shift, and go to state 109
+    T_title   shift, and go to state 110
+
+
+State 186
+
+    2 head: T_Tag T_head T_TagClose head_element . T_IDENT
+
+    T_IDENT  shift, and go to state 237
+
+
+State 187
+
+   14 LINK: T_Tag T_link T_ATT T_TagClose .
+
+    $default  reduce using rule 14 (LINK)
+
+
+State 188
+
+   13 META: T_Tag T_meta T_ATT T_TagClose .
+
+    $default  reduce using rule 13 (META)
+
+
+State 189
+
+   12 script: T_Tag T_script T_ATT T_TagClose . text T_FinalTag T_script T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 238
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 190
+
+   15 style: T_Tag T_style T_ATT T_TagClose . text T_FinalTag T_style T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 239
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 191
+
+   11 title: T_Tag T_title T_TagClose text . T_FinalTag T_title T_TagClose
+
+    T_FinalTag  shift, and go to state 240
+
+
+State 192
+
+   16 body: T_Tag T_body T_ATT . T_TagClose body_content T_FinalTag T_body T_TagClose
+
+    T_TagClose  shift, and go to state 241
+
+
+State 193
+
+    5 footer: T_Tag T_footer . T_TagClose block T_FinalTag T_footer T_TagClose
+
+    T_TagClose  shift, and go to state 242
+
+
+State 194
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body footer T_FinalTag . T_html T_TagClose
+
+    T_html  shift, and go to state 243
+
+
+State 195
+
+    3 head: head_element T_FinalTag T_head T_TagClose .
+
+    $default  reduce using rule 3 (head)
+
+
+State 196
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose paragraph T_FinalTag . T_blockquote T_TagClose
+
+    T_blockquote  shift, and go to state 244
+
+
+State 197
+
+  103 button: T_Tag T_button T_ATT T_TagClose text T_FinalTag . T_button T_TagClose
+
+    T_button  shift, and go to state 245
+
+
+State 198
+
+   79 div: T_Tag T_div T_ATT T_TagClose body_content T_FinalTag . T_div T_TagClose
+
+    T_div  shift, and go to state 246
+
+
+State 199
+
+   75 dt: T_Tag T_dt . T_TagClose text T_FinalTag T_dt T_TagClose
+
+    T_TagClose  shift, and go to state 247
+
+
+State 200
+
+   76 dd: T_Tag T_dd . T_TagClose text T_FinalTag T_dd T_TagClose
+   77   | T_Tag T_dd . T_TagClose block T_FinalTag T_dd T_TagClose
+
+    T_TagClose  shift, and go to state 248
+
+
+State 201
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose def_list_item T_FinalTag . T_dl T_TagClose
+
+    T_dl  shift, and go to state 249
+
+
+State 202
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose text T_FinalTag . T_embed T_TagClose
+
+    T_embed  shift, and go to state 250
+
+
+State 203
+
+  106 object: T_Tag T_object T_ATT T_TagClose text T_FinalTag . T_object T_TagClose
+
+    T_object  shift, and go to state 251
+
+
+State 204
+
+   71 list_item: T_Tag T_li . T_ATT T_TagClose text T_FinalTag T_li T_TagClose
+   72          | T_Tag T_li . T_ATT T_TagClose list T_FinalTag T_li T_TagClose
+
+    T_ATT  shift, and go to state 252
+
+
+State 205
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose list_item T_FinalTag . T_ol T_TagClose
+
+    T_ol  shift, and go to state 253
+
+
+State 206
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose text T_FinalTag . T_p T_TagClose
+
+    T_p  shift, and go to state 254
+
+
+State 207
+
+   78 preformatted: T_Tag T_pre T_TagClose text T_FinalTag T_pre . T_TagClose
+
+    T_TagClose  shift, and go to state 255
+
+
+State 208
+
+  104 span: T_Tag T_span T_ATT T_TagClose text T_FinalTag . T_span T_TagClose
+
+    T_span  shift, and go to state 256
+
+
+State 209
+
+   87 caption: T_Tag T_caption . T_ATT T_TagClose text T_FinalTag T_caption T_TagClose
+
+    T_ATT  shift, and go to state 257
+
+
+State 210
+
+   88 tr: T_Tag . T_tr T_ATT T_TagClose th_or_td T_FinalTag T_tr T_TagClose
+
+    T_tr  shift, and go to state 258
+
+
+State 211
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption tr . T_FinalTag T_table T_TagClose
+
+    T_FinalTag  shift, and go to state 259
+
+
+State 212
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose list_item T_FinalTag . T_ul T_TagClose
+
+    T_ul  shift, and go to state 260
+
+
+State 213
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose text . T_FinalTag T_a T_TagClose
+
+    T_FinalTag  shift, and go to state 261
+
+
+State 214
+
+   91 bold: T_Tag T_b T_TagClose text T_FinalTag . T_b T_TagClose
+
+    T_b  shift, and go to state 262
+
+
+State 215
+
+   94 code: T_Tag T_code T_TagClose text T_FinalTag . T_code T_TagClose
+
+    T_code  shift, and go to state 263
+
+
+State 216
+
+   92 emphasize: T_Tag T_em T_TagClose text T_FinalTag . T_em T_TagClose
+
+    T_em  shift, and go to state 264
+
+
+State 217
+
+   52 h1: T_Tag . T_h1 T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose
+   53   | T_Tag . T_h1 T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose
+   54 h2: T_Tag . T_h2 T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose
+   55   | T_Tag . T_h2 T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose
+   56 h3: T_Tag . T_h3 T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose
+   57   | T_Tag . T_h3 T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose
+   58 h4: T_Tag . T_h4 T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose
+   59   | T_Tag . T_h4 T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose
+   60 h5: T_Tag . T_h5 T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose
+   61   | T_Tag . T_h5 T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose
+   62 h6: T_Tag . T_h6 T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose
+   63   | T_Tag . T_h6 T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose
+   64 paragraph: T_Tag . T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+   68 unordered_list: T_Tag . T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+   69 ordered_list: T_Tag . T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+   70 def_list: T_Tag . T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+   78 preformatted: T_Tag . T_pre T_TagClose text T_FinalTag T_pre T_TagClose
+   79 div: T_Tag . T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+   80 blockquote: T_Tag . T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+   81 form: T_Tag . T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag . T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+   83 BR: T_Tag . T_br T_ATT T_TagClose
+   84 HR: T_Tag . T_hr T_ATT T_TagClose
+   85 IMG: T_Tag . T_img T_ATT T_TagClose
+   86 table: T_Tag . T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+   91 bold: T_Tag . T_b T_TagClose text T_FinalTag T_b T_TagClose
+   92 emphasize: T_Tag . T_em T_TagClose text T_FinalTag T_em T_TagClose
+   93 strong: T_Tag . T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+   94 code: T_Tag . T_code T_TagClose text T_FinalTag T_code T_TagClose
+   98 select: T_Tag . T_select T_ATT T_TagClose select_option T_FinalTag T_select T_TagClose
+  100 textarea: T_Tag . T_textarea T_ATT T_TagClose text T_FinalTag T_textarea T_TagClose
+  101 anchor: T_Tag . T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+  102 INPUT: T_Tag . T_input T_ATT T_TagClose
+  103 button: T_Tag . T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+  104 span: T_Tag . T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+  105 embed: T_Tag . T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+  106 object: T_Tag . T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_a           shift, and go to state 89
+    T_b           shift, and go to state 90
+    T_blockquote  shift, and go to state 29
+    T_br          shift, and go to state 91
+    T_button      shift, and go to state 30
+    T_code        shift, and go to state 92
+    T_div         shift, and go to state 31
+    T_dl          shift, and go to state 32
+    T_em          shift, and go to state 93
+    T_embed       shift, and go to state 33
+    T_form        shift, and go to state 94
+    T_h1          shift, and go to state 95
+    T_h2          shift, and go to state 96
+    T_h3          shift, and go to state 97
+    T_h4          shift, and go to state 98
+    T_h5          shift, and go to state 99
+    T_h6          shift, and go to state 100
+    T_hr          shift, and go to state 34
+    T_img         shift, and go to state 101
+    T_input       shift, and go to state 265
+    T_object      shift, and go to state 35
+    T_ol          shift, and go to state 36
+    T_p           shift, and go to state 37
+    T_pre         shift, and go to state 38
+    T_span        shift, and go to state 39
+    T_strong      shift, and go to state 102
+    T_select      shift, and go to state 266
+    T_table       shift, and go to state 40
+    T_textarea    shift, and go to state 267
+    T_ul          shift, and go to state 41
+
+
+State 218
+
+   82 form: T_Tag T_form T_ATT T_TagClose body_content . T_FinalTag T_form T_TagClose
+
+    T_FinalTag  shift, and go to state 268
+
+
+State 219
+
+   81 form: T_Tag T_form T_ATT T_TagClose form_field . T_FinalTag T_form T_TagClose
+
+    T_FinalTag  shift, and go to state 269
+
+
+State 220
+
+   96 form_field: select .
+
+    $default  reduce using rule 96 (form_field)
+
+
+State 221
+
+   97 form_field: textarea .
+
+    $default  reduce using rule 97 (form_field)
+
+
+State 222
+
+   95 form_field: INPUT .
+
+    $default  reduce using rule 95 (form_field)
+
+
+State 223
+
+   64 paragraph: T_Tag . T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose
+   68 unordered_list: T_Tag . T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+   69 ordered_list: T_Tag . T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+   70 def_list: T_Tag . T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+   78 preformatted: T_Tag . T_pre T_TagClose text T_FinalTag T_pre T_TagClose
+   79 div: T_Tag . T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose
+   80 blockquote: T_Tag . T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+   81 form: T_Tag . T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag . T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+   83 BR: T_Tag . T_br T_ATT T_TagClose
+   84 HR: T_Tag . T_hr T_ATT T_TagClose
+   85 IMG: T_Tag . T_img T_ATT T_TagClose
+   86 table: T_Tag . T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose
+   91 bold: T_Tag . T_b T_TagClose text T_FinalTag T_b T_TagClose
+   92 emphasize: T_Tag . T_em T_TagClose text T_FinalTag T_em T_TagClose
+   93 strong: T_Tag . T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+   94 code: T_Tag . T_code T_TagClose text T_FinalTag T_code T_TagClose
+  101 anchor: T_Tag . T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+  103 button: T_Tag . T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+  104 span: T_Tag . T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+  105 embed: T_Tag . T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+  106 object: T_Tag . T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+
+    T_a           shift, and go to state 89
+    T_b           shift, and go to state 90
+    T_blockquote  shift, and go to state 29
+    T_br          shift, and go to state 91
+    T_button      shift, and go to state 30
+    T_code        shift, and go to state 92
+    T_div         shift, and go to state 31
+    T_dl          shift, and go to state 32
+    T_em          shift, and go to state 93
+    T_embed       shift, and go to state 33
+    T_form        shift, and go to state 94
+    T_hr          shift, and go to state 34
+    T_img         shift, and go to state 101
+    T_object      shift, and go to state 35
+    T_ol          shift, and go to state 36
+    T_p           shift, and go to state 37
+    T_pre         shift, and go to state 38
+    T_span        shift, and go to state 39
+    T_strong      shift, and go to state 102
+    T_table       shift, and go to state 40
+    T_ul          shift, and go to state 41
+
+
+State 224
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose block . T_FinalTag T_h1 T_TagClose
+
+    T_FinalTag  shift, and go to state 270
+
+
+State 225
+
+   53 h1: T_Tag T_h1 T_ATT T_TagClose text . T_FinalTag T_h1 T_TagClose
+
+    T_FinalTag  shift, and go to state 271
+
+
+State 226
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose block . T_FinalTag T_h2 T_TagClose
+
+    T_FinalTag  shift, and go to state 272
+
+
+State 227
+
+   55 h2: T_Tag T_h2 T_ATT T_TagClose text . T_FinalTag T_h2 T_TagClose
+
+    T_FinalTag  shift, and go to state 273
+
+
+State 228
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose block . T_FinalTag T_h3 T_TagClose
+
+    T_FinalTag  shift, and go to state 274
+
+
+State 229
+
+   57 h3: T_Tag T_h3 T_ATT T_TagClose text . T_FinalTag T_h3 T_TagClose
+
+    T_FinalTag  shift, and go to state 275
+
+
+State 230
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose block . T_FinalTag T_h4 T_TagClose
+
+    T_FinalTag  shift, and go to state 276
+
+
+State 231
+
+   59 h4: T_Tag T_h4 T_ATT T_TagClose text . T_FinalTag T_h4 T_TagClose
+
+    T_FinalTag  shift, and go to state 277
+
+
+State 232
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose block . T_FinalTag T_h5 T_TagClose
+
+    T_FinalTag  shift, and go to state 278
+
+
+State 233
+
+   61 h5: T_Tag T_h5 T_ATT T_TagClose text . T_FinalTag T_h5 T_TagClose
+
+    T_FinalTag  shift, and go to state 279
+
+
+State 234
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose block . T_FinalTag T_h6 T_TagClose
+
+    T_FinalTag  shift, and go to state 280
+
+
+State 235
+
+   63 h6: T_Tag T_h6 T_ATT T_TagClose text . T_FinalTag T_h6 T_TagClose
+
+    T_FinalTag  shift, and go to state 281
+
+
+State 236
+
+   93 strong: T_Tag T_strong T_TagClose text T_FinalTag . T_strong T_TagClose
+
+    T_strong  shift, and go to state 282
+
+
+State 237
+
+    2 head: T_Tag T_head T_TagClose head_element T_IDENT .
+
+    $default  reduce using rule 2 (head)
+
+
+State 238
+
+   12 script: T_Tag T_script T_ATT T_TagClose text . T_FinalTag T_script T_TagClose
+
+    T_FinalTag  shift, and go to state 283
+
+
+State 239
+
+   15 style: T_Tag T_style T_ATT T_TagClose text . T_FinalTag T_style T_TagClose
+
+    T_FinalTag  shift, and go to state 284
+
+
+State 240
+
+   11 title: T_Tag T_title T_TagClose text T_FinalTag . T_title T_TagClose
+
+    T_title  shift, and go to state 285
+
+
+State 241
+
+   16 body: T_Tag T_body T_ATT T_TagClose . body_content T_FinalTag T_body T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 43
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 286
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 242
+
+    5 footer: T_Tag T_footer T_TagClose . block T_FinalTag T_footer T_TagClose
+
+    T_Tag           shift, and go to state 10
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 287
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    HR              go to state 21
+    table           go to state 22
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 243
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body footer T_FinalTag T_html . T_TagClose
+
+    T_TagClose  shift, and go to state 288
+
+
+State 244
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote . T_TagClose
+
+    T_TagClose  shift, and go to state 289
+
+
+State 245
+
+  103 button: T_Tag T_button T_ATT T_TagClose text T_FinalTag T_button . T_TagClose
+
+    T_TagClose  shift, and go to state 290
+
+
+State 246
+
+   79 div: T_Tag T_div T_ATT T_TagClose body_content T_FinalTag T_div . T_TagClose
+
+    T_TagClose  shift, and go to state 291
+
+
+State 247
+
+   75 dt: T_Tag T_dt T_TagClose . text T_FinalTag T_dt T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 292
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 248
+
+   76 dd: T_Tag T_dd T_TagClose . text T_FinalTag T_dd T_TagClose
+   77   | T_Tag T_dd T_TagClose . block T_FinalTag T_dd T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 223
+    T_comment_open  shift, and go to state 11
+
+    block           go to state 293
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 294
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 249
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl . T_TagClose
+
+    T_TagClose  shift, and go to state 295
+
+
+State 250
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose text T_FinalTag T_embed . T_TagClose
+
+    T_TagClose  shift, and go to state 296
+
+
+State 251
+
+  106 object: T_Tag T_object T_ATT T_TagClose text T_FinalTag T_object . T_TagClose
+
+    T_TagClose  shift, and go to state 297
+
+
+State 252
+
+   71 list_item: T_Tag T_li T_ATT . T_TagClose text T_FinalTag T_li T_TagClose
+   72          | T_Tag T_li T_ATT . T_TagClose list T_FinalTag T_li T_TagClose
+
+    T_TagClose  shift, and go to state 298
+
+
+State 253
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose list_item T_FinalTag T_ol . T_TagClose
+
+    T_TagClose  shift, and go to state 299
+
+
+State 254
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose text T_FinalTag T_p . T_TagClose
+
+    T_TagClose  shift, and go to state 300
+
+
+State 255
+
+   78 preformatted: T_Tag T_pre T_TagClose text T_FinalTag T_pre T_TagClose .
+
+    $default  reduce using rule 78 (preformatted)
+
+
+State 256
+
+  104 span: T_Tag T_span T_ATT T_TagClose text T_FinalTag T_span . T_TagClose
+
+    T_TagClose  shift, and go to state 301
+
+
+State 257
+
+   87 caption: T_Tag T_caption T_ATT . T_TagClose text T_FinalTag T_caption T_TagClose
+
+    T_TagClose  shift, and go to state 302
+
+
+State 258
+
+   88 tr: T_Tag T_tr . T_ATT T_TagClose th_or_td T_FinalTag T_tr T_TagClose
+
+    T_ATT  shift, and go to state 303
+
+
+State 259
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption tr T_FinalTag . T_table T_TagClose
+
+    T_table  shift, and go to state 304
+
+
+State 260
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose list_item T_FinalTag T_ul . T_TagClose
+
+    T_TagClose  shift, and go to state 305
+
+
+State 261
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose text T_FinalTag . T_a T_TagClose
+
+    T_a  shift, and go to state 306
+
+
+State 262
+
+   91 bold: T_Tag T_b T_TagClose text T_FinalTag T_b . T_TagClose
+
+    T_TagClose  shift, and go to state 307
+
+
+State 263
+
+   94 code: T_Tag T_code T_TagClose text T_FinalTag T_code . T_TagClose
+
+    T_TagClose  shift, and go to state 308
+
+
+State 264
+
+   92 emphasize: T_Tag T_em T_TagClose text T_FinalTag T_em . T_TagClose
+
+    T_TagClose  shift, and go to state 309
+
+
+State 265
+
+  102 INPUT: T_Tag T_input . T_ATT T_TagClose
+
+    T_ATT  shift, and go to state 310
+
+
+State 266
+
+   98 select: T_Tag T_select . T_ATT T_TagClose select_option T_FinalTag T_select T_TagClose
+
+    T_ATT  shift, and go to state 311
+
+
+State 267
+
+  100 textarea: T_Tag T_textarea . T_ATT T_TagClose text T_FinalTag T_textarea T_TagClose
+
+    T_ATT  shift, and go to state 312
+
+
+State 268
+
+   82 form: T_Tag T_form T_ATT T_TagClose body_content T_FinalTag . T_form T_TagClose
+
+    T_form  shift, and go to state 313
+
+
+State 269
+
+   81 form: T_Tag T_form T_ATT T_TagClose form_field T_FinalTag . T_form T_TagClose
+
+    T_form  shift, and go to state 314
+
+
+State 270
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose block T_FinalTag . T_h1 T_TagClose
+
+    T_h1  shift, and go to state 315
+
+
+State 271
+
+   53 h1: T_Tag T_h1 T_ATT T_TagClose text T_FinalTag . T_h1 T_TagClose
+
+    T_h1  shift, and go to state 316
+
+
+State 272
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose block T_FinalTag . T_h2 T_TagClose
+
+    T_h2  shift, and go to state 317
+
+
+State 273
+
+   55 h2: T_Tag T_h2 T_ATT T_TagClose text T_FinalTag . T_h2 T_TagClose
+
+    T_h2  shift, and go to state 318
+
+
+State 274
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose block T_FinalTag . T_h3 T_TagClose
+
+    T_h3  shift, and go to state 319
+
+
+State 275
+
+   57 h3: T_Tag T_h3 T_ATT T_TagClose text T_FinalTag . T_h3 T_TagClose
+
+    T_h3  shift, and go to state 320
+
+
+State 276
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose block T_FinalTag . T_h4 T_TagClose
+
+    T_h4  shift, and go to state 321
+
+
+State 277
+
+   59 h4: T_Tag T_h4 T_ATT T_TagClose text T_FinalTag . T_h4 T_TagClose
+
+    T_h4  shift, and go to state 322
+
+
+State 278
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose block T_FinalTag . T_h5 T_TagClose
+
+    T_h5  shift, and go to state 323
+
+
+State 279
+
+   61 h5: T_Tag T_h5 T_ATT T_TagClose text T_FinalTag . T_h5 T_TagClose
+
+    T_h5  shift, and go to state 324
+
+
+State 280
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose block T_FinalTag . T_h6 T_TagClose
+
+    T_h6  shift, and go to state 325
+
+
+State 281
+
+   63 h6: T_Tag T_h6 T_ATT T_TagClose text T_FinalTag . T_h6 T_TagClose
+
+    T_h6  shift, and go to state 326
+
+
+State 282
+
+   93 strong: T_Tag T_strong T_TagClose text T_FinalTag T_strong . T_TagClose
+
+    T_TagClose  shift, and go to state 327
+
+
+State 283
+
+   12 script: T_Tag T_script T_ATT T_TagClose text T_FinalTag . T_script T_TagClose
+
+    T_script  shift, and go to state 328
+
+
+State 284
+
+   15 style: T_Tag T_style T_ATT T_TagClose text T_FinalTag . T_style T_TagClose
+
+    T_style  shift, and go to state 329
+
+
+State 285
+
+   11 title: T_Tag T_title T_TagClose text T_FinalTag T_title . T_TagClose
+
+    T_TagClose  shift, and go to state 330
+
+
+State 286
+
+   16 body: T_Tag T_body T_ATT T_TagClose body_content . T_FinalTag T_body T_TagClose
+
+    T_FinalTag  shift, and go to state 331
+
+
+State 287
+
+    5 footer: T_Tag T_footer T_TagClose block . T_FinalTag T_footer T_TagClose
+
+    T_FinalTag  shift, and go to state 332
+
+
+State 288
+
+    1 document: T_DOCTYPE header T_Tag T_html T_TagClose head body footer T_FinalTag T_html T_TagClose .
+
+    $default  reduce using rule 1 (document)
+
+
+State 289
+
+   80 blockquote: T_Tag T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose .
+
+    $default  reduce using rule 80 (blockquote)
+
+
+State 290
+
+  103 button: T_Tag T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose .
+
+    $default  reduce using rule 103 (button)
+
+
+State 291
+
+   79 div: T_Tag T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose .
+
+    $default  reduce using rule 79 (div)
+
+
+State 292
+
+   75 dt: T_Tag T_dt T_TagClose text . T_FinalTag T_dt T_TagClose
+
+    T_FinalTag  shift, and go to state 333
+
+
+State 293
+
+   77 dd: T_Tag T_dd T_TagClose block . T_FinalTag T_dd T_TagClose
+
+    T_FinalTag  shift, and go to state 334
+
+
+State 294
+
+   76 dd: T_Tag T_dd T_TagClose text . T_FinalTag T_dd T_TagClose
+
+    T_FinalTag  shift, and go to state 335
+
+
+State 295
+
+   70 def_list: T_Tag T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose .
+
+    $default  reduce using rule 70 (def_list)
+
+
+State 296
+
+  105 embed: T_Tag T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose .
+
+    $default  reduce using rule 105 (embed)
+
+
+State 297
+
+  106 object: T_Tag T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose .
+
+    $default  reduce using rule 106 (object)
+
+
+State 298
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose . text T_FinalTag T_li T_TagClose
+   72          | T_Tag T_li T_ATT T_TagClose . list T_FinalTag T_li T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 336
+
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 337
+    list            go to state 338
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    form            go to state 59
+    BR              go to state 60
+    IMG             go to state 61
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+
+
+State 299
+
+   69 ordered_list: T_Tag T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose .
+
+    $default  reduce using rule 69 (ordered_list)
+
+
+State 300
+
+   64 paragraph: T_Tag T_p T_ATT T_TagClose text T_FinalTag T_p T_TagClose .
+
+    $default  reduce using rule 64 (paragraph)
+
+
+State 301
+
+  104 span: T_Tag T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose .
+
+    $default  reduce using rule 104 (span)
+
+
+State 302
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose . text T_FinalTag T_caption T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 339
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 303
+
+   88 tr: T_Tag T_tr T_ATT . T_TagClose th_or_td T_FinalTag T_tr T_TagClose
+
+    T_TagClose  shift, and go to state 340
+
+
+State 304
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption tr T_FinalTag T_table . T_TagClose
+
+    T_TagClose  shift, and go to state 341
+
+
+State 305
+
+   68 unordered_list: T_Tag T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose .
+
+    $default  reduce using rule 68 (unordered_list)
+
+
+State 306
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose text T_FinalTag T_a . T_TagClose
+
+    T_TagClose  shift, and go to state 342
+
+
+State 307
+
+   91 bold: T_Tag T_b T_TagClose text T_FinalTag T_b T_TagClose .
+
+    $default  reduce using rule 91 (bold)
+
+
+State 308
+
+   94 code: T_Tag T_code T_TagClose text T_FinalTag T_code T_TagClose .
+
+    $default  reduce using rule 94 (code)
+
+
+State 309
+
+   92 emphasize: T_Tag T_em T_TagClose text T_FinalTag T_em T_TagClose .
+
+    $default  reduce using rule 92 (emphasize)
+
+
+State 310
+
+  102 INPUT: T_Tag T_input T_ATT . T_TagClose
+
+    T_TagClose  shift, and go to state 343
+
+
+State 311
+
+   98 select: T_Tag T_select T_ATT . T_TagClose select_option T_FinalTag T_select T_TagClose
+
+    T_TagClose  shift, and go to state 344
+
+
+State 312
+
+  100 textarea: T_Tag T_textarea T_ATT . T_TagClose text T_FinalTag T_textarea T_TagClose
+
+    T_TagClose  shift, and go to state 345
+
+
+State 313
+
+   82 form: T_Tag T_form T_ATT T_TagClose body_content T_FinalTag T_form . T_TagClose
+
+    T_TagClose  shift, and go to state 346
+
+
+State 314
+
+   81 form: T_Tag T_form T_ATT T_TagClose form_field T_FinalTag T_form . T_TagClose
+
+    T_TagClose  shift, and go to state 347
+
+
+State 315
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose block T_FinalTag T_h1 . T_TagClose
+
+    T_TagClose  shift, and go to state 348
+
+
+State 316
+
+   53 h1: T_Tag T_h1 T_ATT T_TagClose text T_FinalTag T_h1 . T_TagClose
+
+    T_TagClose  shift, and go to state 349
+
+
+State 317
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose block T_FinalTag T_h2 . T_TagClose
+
+    T_TagClose  shift, and go to state 350
+
+
+State 318
+
+   55 h2: T_Tag T_h2 T_ATT T_TagClose text T_FinalTag T_h2 . T_TagClose
+
+    T_TagClose  shift, and go to state 351
+
+
+State 319
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose block T_FinalTag T_h3 . T_TagClose
+
+    T_TagClose  shift, and go to state 352
+
+
+State 320
+
+   57 h3: T_Tag T_h3 T_ATT T_TagClose text T_FinalTag T_h3 . T_TagClose
+
+    T_TagClose  shift, and go to state 353
+
+
+State 321
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose block T_FinalTag T_h4 . T_TagClose
+
+    T_TagClose  shift, and go to state 354
+
+
+State 322
+
+   59 h4: T_Tag T_h4 T_ATT T_TagClose text T_FinalTag T_h4 . T_TagClose
+
+    T_TagClose  shift, and go to state 355
+
+
+State 323
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose block T_FinalTag T_h5 . T_TagClose
+
+    T_TagClose  shift, and go to state 356
+
+
+State 324
+
+   61 h5: T_Tag T_h5 T_ATT T_TagClose text T_FinalTag T_h5 . T_TagClose
+
+    T_TagClose  shift, and go to state 357
+
+
+State 325
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose block T_FinalTag T_h6 . T_TagClose
+
+    T_TagClose  shift, and go to state 358
+
+
+State 326
+
+   63 h6: T_Tag T_h6 T_ATT T_TagClose text T_FinalTag T_h6 . T_TagClose
+
+    T_TagClose  shift, and go to state 359
+
+
+State 327
+
+   93 strong: T_Tag T_strong T_TagClose text T_FinalTag T_strong T_TagClose .
+
+    $default  reduce using rule 93 (strong)
+
+
+State 328
+
+   12 script: T_Tag T_script T_ATT T_TagClose text T_FinalTag T_script . T_TagClose
+
+    T_TagClose  shift, and go to state 360
+
+
+State 329
+
+   15 style: T_Tag T_style T_ATT T_TagClose text T_FinalTag T_style . T_TagClose
+
+    T_TagClose  shift, and go to state 361
+
+
+State 330
+
+   11 title: T_Tag T_title T_TagClose text T_FinalTag T_title T_TagClose .
+
+    $default  reduce using rule 11 (title)
+
+
+State 331
+
+   16 body: T_Tag T_body T_ATT T_TagClose body_content T_FinalTag . T_body T_TagClose
+
+    T_body  shift, and go to state 362
+
+
+State 332
+
+    5 footer: T_Tag T_footer T_TagClose block T_FinalTag . T_footer T_TagClose
+
+    T_footer  shift, and go to state 363
+
+
+State 333
+
+   75 dt: T_Tag T_dt T_TagClose text T_FinalTag . T_dt T_TagClose
+
+    T_dt  shift, and go to state 364
+
+
+State 334
+
+   77 dd: T_Tag T_dd T_TagClose block T_FinalTag . T_dd T_TagClose
+
+    T_dd  shift, and go to state 365
+
+
+State 335
+
+   76 dd: T_Tag T_dd T_TagClose text T_FinalTag . T_dd T_TagClose
+
+    T_dd  shift, and go to state 366
+
+
+State 336
+
+   68 unordered_list: T_Tag . T_ul T_ATT T_TagClose list_item T_FinalTag T_ul T_TagClose
+   69 ordered_list: T_Tag . T_ol T_ATT T_TagClose list_item T_FinalTag T_ol T_TagClose
+   70 def_list: T_Tag . T_dl T_ATT T_TagClose def_list_item T_FinalTag T_dl T_TagClose
+   81 form: T_Tag . T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose
+   82     | T_Tag . T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+   83 BR: T_Tag . T_br T_ATT T_TagClose
+   85 IMG: T_Tag . T_img T_ATT T_TagClose
+   91 bold: T_Tag . T_b T_TagClose text T_FinalTag T_b T_TagClose
+   92 emphasize: T_Tag . T_em T_TagClose text T_FinalTag T_em T_TagClose
+   93 strong: T_Tag . T_strong T_TagClose text T_FinalTag T_strong T_TagClose
+   94 code: T_Tag . T_code T_TagClose text T_FinalTag T_code T_TagClose
+  101 anchor: T_Tag . T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+
+    T_a       shift, and go to state 89
+    T_b       shift, and go to state 90
+    T_br      shift, and go to state 91
+    T_code    shift, and go to state 92
+    T_dl      shift, and go to state 32
+    T_em      shift, and go to state 93
+    T_form    shift, and go to state 94
+    T_img     shift, and go to state 101
+    T_ol      shift, and go to state 36
+    T_strong  shift, and go to state 102
+    T_ul      shift, and go to state 41
+
+
+State 337
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose text . T_FinalTag T_li T_TagClose
+
+    T_FinalTag  shift, and go to state 367
+
+
+State 338
+
+   72 list_item: T_Tag T_li T_ATT T_TagClose list . T_FinalTag T_li T_TagClose
+
+    T_FinalTag  shift, and go to state 368
+
+
+State 339
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose text . T_FinalTag T_caption T_TagClose
+
+    T_FinalTag  shift, and go to state 369
+
+
+State 340
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose . th_or_td T_FinalTag T_tr T_TagClose
+
+    T_Tag  shift, and go to state 370
+
+    th_or_td  go to state 371
+
+
+State 341
+
+   86 table: T_Tag T_table T_ATT T_TagClose caption tr T_FinalTag T_table T_TagClose .
+
+    $default  reduce using rule 86 (table)
+
+
+State 342
+
+  101 anchor: T_Tag T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose .
+
+    $default  reduce using rule 101 (anchor)
+
+
+State 343
+
+  102 INPUT: T_Tag T_input T_ATT T_TagClose .
+
+    $default  reduce using rule 102 (INPUT)
+
+
+State 344
+
+   98 select: T_Tag T_select T_ATT T_TagClose . select_option T_FinalTag T_select T_TagClose
+
+    T_Tag  shift, and go to state 372
+
+    select_option  go to state 373
+
+
+State 345
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose . text T_FinalTag T_textarea T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 374
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 346
+
+   82 form: T_Tag T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose .
+
+    $default  reduce using rule 82 (form)
+
+
+State 347
+
+   81 form: T_Tag T_form T_ATT T_TagClose form_field T_FinalTag T_form T_TagClose .
+
+    $default  reduce using rule 81 (form)
+
+
+State 348
+
+   52 h1: T_Tag T_h1 T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose .
+
+    $default  reduce using rule 52 (h1)
+
+
+State 349
+
+   53 h1: T_Tag T_h1 T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose .
+
+    $default  reduce using rule 53 (h1)
+
+
+State 350
+
+   54 h2: T_Tag T_h2 T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose .
+
+    $default  reduce using rule 54 (h2)
+
+
+State 351
+
+   55 h2: T_Tag T_h2 T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose .
+
+    $default  reduce using rule 55 (h2)
+
+
+State 352
+
+   56 h3: T_Tag T_h3 T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose .
+
+    $default  reduce using rule 56 (h3)
+
+
+State 353
+
+   57 h3: T_Tag T_h3 T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose .
+
+    $default  reduce using rule 57 (h3)
+
+
+State 354
+
+   58 h4: T_Tag T_h4 T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose .
+
+    $default  reduce using rule 58 (h4)
+
+
+State 355
+
+   59 h4: T_Tag T_h4 T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose .
+
+    $default  reduce using rule 59 (h4)
+
+
+State 356
+
+   60 h5: T_Tag T_h5 T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose .
+
+    $default  reduce using rule 60 (h5)
+
+
+State 357
+
+   61 h5: T_Tag T_h5 T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose .
+
+    $default  reduce using rule 61 (h5)
+
+
+State 358
+
+   62 h6: T_Tag T_h6 T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose .
+
+    $default  reduce using rule 62 (h6)
+
+
+State 359
+
+   63 h6: T_Tag T_h6 T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose .
+
+    $default  reduce using rule 63 (h6)
+
+
+State 360
+
+   12 script: T_Tag T_script T_ATT T_TagClose text T_FinalTag T_script T_TagClose .
+
+    $default  reduce using rule 12 (script)
+
+
+State 361
+
+   15 style: T_Tag T_style T_ATT T_TagClose text T_FinalTag T_style T_TagClose .
+
+    $default  reduce using rule 15 (style)
+
+
+State 362
+
+   16 body: T_Tag T_body T_ATT T_TagClose body_content T_FinalTag T_body . T_TagClose
+
+    T_TagClose  shift, and go to state 375
+
+
+State 363
+
+    5 footer: T_Tag T_footer T_TagClose block T_FinalTag T_footer . T_TagClose
+
+    T_TagClose  shift, and go to state 376
+
+
+State 364
+
+   75 dt: T_Tag T_dt T_TagClose text T_FinalTag T_dt . T_TagClose
+
+    T_TagClose  shift, and go to state 377
+
+
+State 365
+
+   77 dd: T_Tag T_dd T_TagClose block T_FinalTag T_dd . T_TagClose
+
+    T_TagClose  shift, and go to state 378
+
+
+State 366
+
+   76 dd: T_Tag T_dd T_TagClose text T_FinalTag T_dd . T_TagClose
+
+    T_TagClose  shift, and go to state 379
+
+
+State 367
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose text T_FinalTag . T_li T_TagClose
+
+    T_li  shift, and go to state 380
+
+
+State 368
+
+   72 list_item: T_Tag T_li T_ATT T_TagClose list T_FinalTag . T_li T_TagClose
+
+    T_li  shift, and go to state 381
+
+
+State 369
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose text T_FinalTag . T_caption T_TagClose
+
+    T_caption  shift, and go to state 382
+
+
+State 370
+
+   89 th_or_td: T_Tag . T_th T_TagClose body_content T_FinalTag T_th T_TagClose
+   90         | T_Tag . T_td T_TagClose body_content T_FinalTag T_td T_TagClose
+
+    T_td  shift, and go to state 383
+    T_th  shift, and go to state 384
+
+
+State 371
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose th_or_td . T_FinalTag T_tr T_TagClose
+
+    T_FinalTag  shift, and go to state 385
+
+
+State 372
+
+   99 select_option: T_Tag . T_option T_ATT T_TagClose text T_FinalTag T_option T_TagClose
+
+    T_option  shift, and go to state 386
+
+
+State 373
+
+   98 select: T_Tag T_select T_ATT T_TagClose select_option . T_FinalTag T_select T_TagClose
+
+    T_FinalTag  shift, and go to state 387
+
+
+State 374
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose text . T_FinalTag T_textarea T_TagClose
+
+    T_FinalTag  shift, and go to state 388
+
+
+State 375
+
+   16 body: T_Tag T_body T_ATT T_TagClose body_content T_FinalTag T_body T_TagClose .
+
+    $default  reduce using rule 16 (body)
+
+
+State 376
+
+    5 footer: T_Tag T_footer T_TagClose block T_FinalTag T_footer T_TagClose .
+
+    $default  reduce using rule 5 (footer)
+
+
+State 377
+
+   75 dt: T_Tag T_dt T_TagClose text T_FinalTag T_dt T_TagClose .
+
+    $default  reduce using rule 75 (dt)
+
+
+State 378
+
+   77 dd: T_Tag T_dd T_TagClose block T_FinalTag T_dd T_TagClose .
+
+    $default  reduce using rule 77 (dd)
+
+
+State 379
+
+   76 dd: T_Tag T_dd T_TagClose text T_FinalTag T_dd T_TagClose .
+
+    $default  reduce using rule 76 (dd)
+
+
+State 380
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose text T_FinalTag T_li . T_TagClose
+
+    T_TagClose  shift, and go to state 389
+
+
+State 381
+
+   72 list_item: T_Tag T_li T_ATT T_TagClose list T_FinalTag T_li . T_TagClose
+
+    T_TagClose  shift, and go to state 390
+
+
+State 382
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose text T_FinalTag T_caption . T_TagClose
+
+    T_TagClose  shift, and go to state 391
+
+
+State 383
+
+   90 th_or_td: T_Tag T_td . T_TagClose body_content T_FinalTag T_td T_TagClose
+
+    T_TagClose  shift, and go to state 392
+
+
+State 384
+
+   89 th_or_td: T_Tag T_th . T_TagClose body_content T_FinalTag T_th T_TagClose
+
+    T_TagClose  shift, and go to state 393
+
+
+State 385
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose th_or_td T_FinalTag . T_tr T_TagClose
+
+    T_tr  shift, and go to state 394
+
+
+State 386
+
+   99 select_option: T_Tag T_option . T_ATT T_TagClose text T_FinalTag T_option T_TagClose
+
+    T_ATT  shift, and go to state 395
+
+
+State 387
+
+   98 select: T_Tag T_select T_ATT T_TagClose select_option T_FinalTag . T_select T_TagClose
+
+    T_select  shift, and go to state 396
+
+
+State 388
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose text T_FinalTag . T_textarea T_TagClose
+
+    T_textarea  shift, and go to state 397
+
+
+State 389
+
+   71 list_item: T_Tag T_li T_ATT T_TagClose text T_FinalTag T_li T_TagClose .
+
+    $default  reduce using rule 71 (list_item)
+
+
+State 390
+
+   72 list_item: T_Tag T_li T_ATT T_TagClose list T_FinalTag T_li T_TagClose .
+
+    $default  reduce using rule 72 (list_item)
+
+
+State 391
+
+   87 caption: T_Tag T_caption T_ATT T_TagClose text T_FinalTag T_caption T_TagClose .
+
+    $default  reduce using rule 87 (caption)
+
+
+State 392
+
+   90 th_or_td: T_Tag T_td T_TagClose . body_content T_FinalTag T_td T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 43
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 398
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 393
+
+   89 th_or_td: T_Tag T_th T_TagClose . body_content T_FinalTag T_th T_TagClose
+
+    T_IDENT         shift, and go to state 42
+    T_Tag           shift, and go to state 43
+    T_comment_open  shift, and go to state 11
+
+    body_tag        go to state 44
+    body_content    go to state 399
+    heading         go to state 46
+    block           go to state 47
+    font            go to state 48
+    phrase          go to state 49
+    special         go to state 50
+    texT_Tag        go to state 51
+    text            go to state 52
+    h1              go to state 53
+    h2              go to state 54
+    h3              go to state 55
+    h4              go to state 56
+    h5              go to state 57
+    h6              go to state 58
+    paragraph       go to state 13
+    list            go to state 14
+    unordered_list  go to state 15
+    ordered_list    go to state 16
+    def_list        go to state 17
+    preformatted    go to state 18
+    div             go to state 19
+    blockquote      go to state 20
+    form            go to state 59
+    BR              go to state 60
+    HR              go to state 21
+    IMG             go to state 61
+    table           go to state 22
+    bold            go to state 62
+    emphasize       go to state 63
+    strong          go to state 64
+    code            go to state 65
+    anchor          go to state 66
+    button          go to state 23
+    span            go to state 24
+    embed           go to state 25
+    object          go to state 26
+    comment         go to state 27
+
+
+State 394
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose th_or_td T_FinalTag T_tr . T_TagClose
+
+    T_TagClose  shift, and go to state 400
+
+
+State 395
+
+   99 select_option: T_Tag T_option T_ATT . T_TagClose text T_FinalTag T_option T_TagClose
+
+    T_TagClose  shift, and go to state 401
+
+
+State 396
+
+   98 select: T_Tag T_select T_ATT T_TagClose select_option T_FinalTag T_select . T_TagClose
+
+    T_TagClose  shift, and go to state 402
+
+
+State 397
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose text T_FinalTag T_textarea . T_TagClose
+
+    T_TagClose  shift, and go to state 403
+
+
+State 398
+
+   90 th_or_td: T_Tag T_td T_TagClose body_content . T_FinalTag T_td T_TagClose
+
+    T_FinalTag  shift, and go to state 404
+
+
+State 399
+
+   89 th_or_td: T_Tag T_th T_TagClose body_content . T_FinalTag T_th T_TagClose
+
+    T_FinalTag  shift, and go to state 405
+
+
+State 400
+
+   88 tr: T_Tag T_tr T_ATT T_TagClose th_or_td T_FinalTag T_tr T_TagClose .
+
+    $default  reduce using rule 88 (tr)
+
+
+State 401
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose . text T_FinalTag T_option T_TagClose
+
+    T_IDENT  shift, and go to state 42
+    T_Tag    shift, and go to state 123
+
+    font       go to state 48
+    phrase     go to state 49
+    special    go to state 50
+    texT_Tag   go to state 51
+    text       go to state 406
+    form       go to state 59
+    BR         go to state 60
+    IMG        go to state 61
+    bold       go to state 62
+    emphasize  go to state 63
+    strong     go to state 64
+    code       go to state 65
+    anchor     go to state 66
+
+
+State 402
+
+   98 select: T_Tag T_select T_ATT T_TagClose select_option T_FinalTag T_select T_TagClose .
+
+    $default  reduce using rule 98 (select)
+
+
+State 403
+
+  100 textarea: T_Tag T_textarea T_ATT T_TagClose text T_FinalTag T_textarea T_TagClose .
+
+    $default  reduce using rule 100 (textarea)
+
+
+State 404
+
+   90 th_or_td: T_Tag T_td T_TagClose body_content T_FinalTag . T_td T_TagClose
+
+    T_td  shift, and go to state 407
+
+
+State 405
+
+   89 th_or_td: T_Tag T_th T_TagClose body_content T_FinalTag . T_th T_TagClose
+
+    T_th  shift, and go to state 408
+
+
+State 406
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose text . T_FinalTag T_option T_TagClose
+
+    T_FinalTag  shift, and go to state 409
+
+
+State 407
+
+   90 th_or_td: T_Tag T_td T_TagClose body_content T_FinalTag T_td . T_TagClose
+
+    T_TagClose  shift, and go to state 410
+
+
+State 408
+
+   89 th_or_td: T_Tag T_th T_TagClose body_content T_FinalTag T_th . T_TagClose
+
+    T_TagClose  shift, and go to state 411
+
+
+State 409
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose text T_FinalTag . T_option T_TagClose
+
+    T_option  shift, and go to state 412
+
+
+State 410
+
+   90 th_or_td: T_Tag T_td T_TagClose body_content T_FinalTag T_td T_TagClose .
+
+    $default  reduce using rule 90 (th_or_td)
+
+
+State 411
+
+   89 th_or_td: T_Tag T_th T_TagClose body_content T_FinalTag T_th T_TagClose .
+
+    $default  reduce using rule 89 (th_or_td)
+
+
+State 412
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose text T_FinalTag T_option . T_TagClose
+
+    T_TagClose  shift, and go to state 413
+
+
+State 413
+
+   99 select_option: T_Tag T_option T_ATT T_TagClose text T_FinalTag T_option T_TagClose .
+
+    $default  reduce using rule 99 (select_option)
