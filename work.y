@@ -12,116 +12,107 @@ extern yylineno;
 %token  T_Tag T_TagClose T_FinalTag T_comment_open T_comment_close 
 %%
 /*Tokens ordenados del mas general al mas especifico*/
-document
-  : 	T_DOCTYPE 
-                header 
-		T_Tag T_html T_TagClose 
+document: 	T_Tag T_DOCTYPE T_html T_TagClose 
+		T_Tag T_html T_TagClose
+                header  
 		head
 		body
-                footer 
-		T_FinalTag T_html T_TagClose
+		T_FinalTag T_html T_TagClose{printf("!DOCTYPE\n");}
 	;
-head: 	T_Tag T_head T_TagClose 
-		 head_element
-		T_IDENT | head_element 
-		T_FinalTag T_head T_TagClose 
+header	: 	T_Tag T_header T_TagClose 
+		text
+		T_FinalTag T_header T_TagClose{printf("<header>\n");}
+       	;
+
+head	: 	T_Tag T_head T_TagClose
+		title
+		head_element
+		T_FinalTag T_head T_TagClose{printf("<head>\n");}
 	;
-header: 
-	T_Tag T_header T_TagClose 
-		 block
-		T_FinalTag T_header T_TagClose 
-       ;
-footer: 
-	T_Tag T_footer T_TagClose 
-		 block
-		T_FinalTag T_footer T_TagClose 
-       ;
-head_element
-	:	title	//bug need at least a title, rest optional
-	|	script
-	|	style
-	|	META
-	|	LINK
-	;
-title
-	:	T_Tag T_title T_TagClose text T_FinalTag T_title T_TagClose
-	;
-script
-	:	T_Tag T_script T_ATT T_TagClose text T_FinalTag T_script T_TagClose
-	;
-META
-	: 	T_Tag T_meta T_ATT T_TagClose
+body	: 	T_Tag T_body Atribute T_TagClose  
+		body_content  
+		T_FinalTag T_body T_TagClose  
 	;
 
-LINK
-	:	T_Tag T_link  T_ATT T_TagClose	
+/*TAGS DEL ENCABEZADO*/
+title	:	T_Tag T_title T_TagClose text T_FinalTag T_title T_TagClose{printf("<title>\n");}
+	;
+
+head_element
+	:	script head_element {printf("<head_element>\n");}
+	|	style head_element {printf("<head_element>\n");}
+	|	META head_element {printf("<head_element>\n");}
+	|	LINK head_element {printf("<head_element>\n");}
+	|	epsilon
+	;
+
+script	:	T_Tag T_script Atribute T_TagClose text T_FinalTag T_script T_TagClose{printf("<script>\n");}
 	;
 style
-	:	T_Tag T_style T_ATT T_TagClose text T_FinalTag T_style T_TagClose
+	:	T_Tag T_style Atribute T_TagClose text T_FinalTag T_style T_TagClose{printf("<style>\n");}
 	;
-
-
-body: 	 T_Tag T_body T_ATT T_TagClose  
-		 body_content  
-		 T_FinalTag T_body T_TagClose  
+META
+	: 	T_Tag T_meta Atribute T_TagClose{printf("<meta>\n");}
 	;
-
-body_tag
-	: 	heading | block 
+LINK
+	:	T_Tag T_link Atribute T_TagClose{printf("<link>\n");}
 	;
+/*FIN DE LOS TAGS DEL ENCABEZADO*/
 
+/*TAGS DEL BODY*/
 body_content
-	: 	body_tag | text
+	: 	body_tag body_content {printf("<body_element>\n");}
+	| 	text      {printf("<body_element>\n");}
 	;
-
-
+body_tag
+	: 	heading 
+	|	block  
+	;
 heading
-	:	h1 | h2 | h3 | h4 | h5 | h6
+	:	h1 {printf("<h1>\n");}
+	|	h2 {printf("<h2>\n");}
+	| 	h3 {printf("<h3>\n");}
+	| 	h4 {printf("<h4>\n");}
+	| 	h5 {printf("<h5>\n");}
+	| 	h6 {printf("<h6>\n");}
 	;
 
+h1	:	T_Tag T_h1 Atribute T_TagClose text T_FinalTag T_h1 T_TagClose
+	;
+h2	:	T_Tag T_h2 Atribute T_TagClose text T_FinalTag T_h2 T_TagClose
+	;
+h3	:	T_Tag T_h3 Atribute T_TagClose text T_FinalTag T_h3 T_TagClose
+	;
+h4	:	T_Tag T_h4 Atribute T_TagClose text T_FinalTag T_h4 T_TagClose
+	;
+h5	:	T_Tag T_h5 Atribute T_TagClose text T_FinalTag T_h5 T_TagClose
+	;
+h6	:	T_Tag T_h6 Atribute T_TagClose text T_FinalTag T_h6 T_TagClose
+	;
 block
-	:	paragraph | list | preformatted  | div 
-		| blockquote | HR | table | button | span | embed |object | comment
+	:	paragraph  
+	| 	list 
+	| 	preformatted  
+	| 	div 
+	| 	blockquote 
+	| 	HR 
+	|	table 
+	|	button 
+	| 	span 
+	| 	embed 
+	|	object 
+	| 	comment 
+	|	form
+	|	BR
+	|	IMG	
+	|	bold
+	|	emphasize
+	| 	strong
+	|	code
+	|	anchor
 	;
-font:	  bold 
-	;
-
-phrase
-	:	emphasize | strong | code 
-	;
-	
-special
-	:	anchor | IMG | BR 
-	;
-
-texT_Tag
-	:         font | phrase | special | form
-	;
-
-text:	T_IDENT | texT_Tag
-	;
-
-h1	:	T_Tag T_h1 T_ATT T_TagClose block T_FinalTag T_h1 T_TagClose
-        |       T_Tag T_h1 T_ATT T_TagClose text T_FinalTag T_h1 T_TagClose
-	;
-h2	:	T_Tag T_h2 T_ATT T_TagClose block T_FinalTag T_h2 T_TagClose
-        |       T_Tag T_h2 T_ATT T_TagClose text T_FinalTag T_h2 T_TagClose
-	;
-h3	:	T_Tag T_h3 T_ATT T_TagClose block T_FinalTag T_h3 T_TagClose
-        |       T_Tag T_h3 T_ATT T_TagClose text T_FinalTag T_h3 T_TagClose
-	;
-h4	:	T_Tag T_h4 T_ATT T_TagClose block T_FinalTag T_h4 T_TagClose
-        |       T_Tag T_h4 T_ATT T_TagClose text T_FinalTag T_h4 T_TagClose
-	;
-h5	:	T_Tag T_h5 T_ATT T_TagClose block T_FinalTag T_h5 T_TagClose
-        |       T_Tag T_h5 T_ATT T_TagClose text T_FinalTag T_h5 T_TagClose
-	;
-h6	:	T_Tag T_h6 T_ATT T_TagClose block T_FinalTag T_h6 T_TagClose
-        |       T_Tag T_h6 T_ATT T_TagClose text T_FinalTag T_h6 T_TagClose
-	;
-
 paragraph
-	:	T_Tag T_p  T_ATT T_TagClose  text  T_FinalTag T_p T_TagClose	
+	:	T_Tag T_p Atribute T_TagClose  text  T_FinalTag T_p T_TagClose	
 	;
 
 list
@@ -131,24 +122,25 @@ list
 	;
 
 unordered_list
-	:	 T_Tag T_ul  T_ATT T_TagClose  list_item T_FinalTag T_ul T_TagClose
+	:	 T_Tag T_ul Atribute T_TagClose  list_item T_FinalTag T_ul T_TagClose
 	;
 
 ordered_list
-	:	T_Tag T_ol  T_ATT T_TagClose  list_item T_FinalTag T_ol T_TagClose
+	:	T_Tag T_ol Atribute T_TagClose  list_item T_FinalTag T_ol T_TagClose
 	;
 
 def_list
-	:	T_Tag T_dl  T_ATT T_TagClose  def_list_item T_FinalTag T_dl T_TagClose 
+	:	T_Tag T_dl Atribute T_TagClose  def_list_item T_FinalTag T_dl T_TagClose 
 	;
 
 list_item
-	:	T_Tag T_li  T_ATT T_TagClose  text  T_FinalTag T_li T_TagClose
-        |       T_Tag T_li  T_ATT T_TagClose  list  T_FinalTag T_li T_TagClose	
+	:	T_Tag T_li  Atribute T_TagClose  text  T_FinalTag T_li T_TagClose
+        |       T_Tag T_li  Atribute T_TagClose  list  T_FinalTag T_li T_TagClose	
 	;
 	
 def_list_item
-	:	dt | dd
+	:	dt 
+	| 	dd
 	;
 
 dt	:	T_Tag T_dt  T_TagClose text T_FinalTag T_dt T_TagClose
@@ -160,35 +152,35 @@ preformatted
 	:	T_Tag T_pre  T_TagClose text T_FinalTag T_pre T_TagClose
 	;
 
-div	:	T_Tag T_div T_ATT T_TagClose body_content T_FinalTag T_div T_TagClose		
+div	:	T_Tag T_div Atribute T_TagClose body_content T_FinalTag T_div T_TagClose		
 	;
 
 blockquote
-	:	T_Tag T_blockquote T_ATT T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
+	:	T_Tag T_blockquote Atribute T_TagClose paragraph T_FinalTag T_blockquote T_TagClose
 	;
 
 form
- 	:	T_Tag T_form T_ATT T_TagClose form_field   T_FinalTag T_form T_TagClose
-        |       T_Tag T_form T_ATT T_TagClose body_content T_FinalTag T_form T_TagClose
+ 	:	T_Tag T_form Atribute T_TagClose form_field   T_FinalTag T_form T_TagClose
+        |       T_Tag T_form Atribute T_TagClose body_content T_FinalTag T_form T_TagClose
 	;
 BR
-	:	T_Tag T_br T_ATT T_TagClose 
+	:	T_Tag T_br Atribute T_TagClose 
 	;
-HR	:	T_Tag T_hr T_ATT T_TagClose
+HR	:	T_Tag T_hr Atribute T_TagClose
 	;
-IMG	:	T_Tag T_img T_ATT T_TagClose
+IMG	:	T_Tag T_img Atribute T_TagClose
 	;
 
 
 table
-	:	T_Tag T_table T_ATT T_TagClose caption tr  T_FinalTag T_table T_TagClose
+	:	T_Tag T_table Atribute T_TagClose caption tr  T_FinalTag T_table T_TagClose
 	;
 
 caption
-	:	T_Tag T_caption T_ATT T_TagClose text T_FinalTag T_caption T_TagClose	
+	:	T_Tag T_caption Atribute T_TagClose text T_FinalTag T_caption T_TagClose	
 	;
 
-tr	:	T_Tag T_tr T_ATT T_TagClose th_or_td T_FinalTag T_tr T_TagClose
+tr	:	T_Tag T_tr Atribute T_TagClose th_or_td T_FinalTag T_tr T_TagClose
 	;
 
 th_or_td
@@ -208,37 +200,51 @@ code
 	:	T_Tag T_code T_TagClose  text  T_FinalTag T_code T_TagClose
 	;
 form_field
-	:	INPUT | select | textarea
+	:	INPUT 
+	| 	select 
+	| 	textarea
 	;
 select
-	:	T_Tag T_select T_ATT T_TagClose  select_option  T_FinalTag T_select T_TagClose
+	:	T_Tag T_select Atribute T_TagClose  select_option  T_FinalTag T_select T_TagClose
 	;
 
 select_option
-	:	T_Tag T_option T_ATT T_TagClose text T_FinalTag T_option T_TagClose
+	:	T_Tag T_option Atribute T_TagClose text T_FinalTag T_option T_TagClose
 	;
 textarea
-	:	T_Tag T_textarea T_ATT T_TagClose  text T_FinalTag T_textarea T_TagClose
+	:	T_Tag T_textarea Atribute T_TagClose  text T_FinalTag T_textarea T_TagClose
 	;
 anchor	
-	:	T_Tag T_a T_ATT T_TagClose text T_FinalTag T_a T_TagClose
+	:	T_Tag T_a Atribute T_TagClose text T_FinalTag T_a T_TagClose
 	;
-INPUT   :	T_Tag T_input T_ATT T_TagClose 
+INPUT   :	T_Tag T_input Atribute T_TagClose 
 	;
 
 button 
-        :	T_Tag T_button T_ATT T_TagClose text T_FinalTag T_button T_TagClose
+        :	T_Tag T_button Atribute T_TagClose text T_FinalTag T_button T_TagClose
         ;
 span 
-        :	T_Tag T_span T_ATT T_TagClose text T_FinalTag T_span T_TagClose
+        :	T_Tag T_span Atribute T_TagClose text T_FinalTag T_span T_TagClose
         ;
 embed 
-        :	T_Tag T_embed T_ATT T_TagClose text T_FinalTag T_embed T_TagClose
+        :	T_Tag T_embed Atribute T_TagClose text T_FinalTag T_embed T_TagClose
         ;
 object 
-        :	T_Tag T_object T_ATT T_TagClose text T_FinalTag T_object T_TagClose
+        :	T_Tag T_object Atribute T_TagClose text T_FinalTag T_object T_TagClose
         ;
-comment :       T_comment_open body_content T_comment_close 
+comment :	T_comment_open body_content T_comment_close
+	;
+
+/*FIN DE LOS TAGS DEL BODY*/
+
+text	:	T_IDENT text{printf("Identificador= ");}
+	| 	epsilon 
+	;
+
+Atribute : 	T_ATT Atribute {printf("Atributo\n");}
+	|	epsilon
+	;
+epsilon :	/*EPSILON*/
 	;
 ATT     :       T_ATT  ATT
         |
@@ -247,4 +253,4 @@ ATT     :       T_ATT  ATT
 int main(){
  return yyparse();
 }
-yyerror (char *s) {fprintf(stderr,"Error: Unrecognized character: %s at line: %d\n",yylval.str,yylineno);}
+yyerror (char *s) {fprintf(stderr,"Syntax Error near: %s at line: %d\n",yylval.str,yylineno);}
