@@ -12,7 +12,7 @@ Char char
 Tag <
 TagClose >
 FinalTagClose "</"
-CommentOpenTag "<--"
+CommentOpenTag "<!--"
 CommentCloseTag "-->"
 Ident  [a-z,A-Z,0-9,".",":",",",";","/","\-","_",'\\',"@","{","}","(",")"]+
 Expresion "\""+{Ident}+"\""
