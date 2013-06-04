@@ -84,7 +84,7 @@ head_element
 	: 	script {insertar_nodo("head_element","head_element");}head_element //Elemento Script
 	|	style {insertar_nodo("head_element","head_element");}head_element //Elemento Style
 	|	META {insertar_nodo("head_element","head_element");}head_element  //Elemento meta
-	|	LINK {insertar_nodo("head_element","}head_element");}head_element  //Elemento link
+	|	LINK {insertar_nodo("head_element","head_element");}head_element  //Elemento link
 	|	{insertar_nodo("head_element","epsilon");}epsilon //la etiqueta <head> puede estar vacia por lo que deriva a Epsilon
 	;
 
