@@ -120,8 +120,8 @@ LINK
 Elementos de la etiqueta <body>
 *********************************/
 body_content
-	: 	{insertar_nodo("body_content","body_tag");}body_tag
-                {insertar_nodo("body_content","body_content");}body_content//Conjunto de etiquetas o elementos que forman el contenido del body
+	: 	body_tag
+                body_content//Conjunto de etiquetas o elementos que forman el contenido del body
 	| 	{insertar_nodo("body_content","text");}text   //texto dentro del body  
 	;
 body_tag
@@ -238,8 +238,8 @@ unordered_list	//Listas Desordenadas
                            insertar_nodo("unordered_list","def_list");} 
 		{insertar_nodo("unordered_list","Atribute");}Atribute	//Atributos de la etiqueta
 		T_TagClose  	//<ul>
-		{insertar_nodo("unordered_list","ist_item");}list_item	//Item de la lista 
-		T_FinalTag T_ul T_TagClose	//</ul>
+		{insertar_nodo("unordered_list","list_item");}list_item	//Item de la lista 
+		T_FinalTag T_ul T_TagClose	//</ul>	
 	;
 
 ordered_list	//Listas Ordenadas
@@ -264,6 +264,7 @@ def_list	//Listas Descriptivas
 		T_TagClose  	//<dl>
 		{insertar_nodo("def_list","def_list_item");}def_list_item 	//Item de la Lista
 		T_FinalTag T_dl T_TagClose 	//</dl>
+     
 	;
 
 list_item	//Un Item de una lista puede poseer solo texto o sublistas
@@ -272,15 +273,13 @@ list_item	//Un Item de una lista puede poseer solo texto o sublistas
 		{insertar_nodo("list_item","Atribute");}Atribute  	//Atributos de la etiqueta
 		T_TagClose  	//<li>
 		{insertar_nodo("list_item","text");}text  		//Texto dentro de la etiqueta
-		T_FinalTag T_li T_TagClose 	//</li>
-		//Item con Sublistas
-        |       T_Tag T_li  {insertar_nodo("list_item","T_li");}
-		{insertar_nodo("list_item","Atribute");}Atribute     //Atributos de la etiqueta 
-		T_TagClose  	//<li>
-		{insertar_nodo("list_item","list");}list  		//Sublistas
-		T_FinalTag T_li T_TagClose 	//</li>	
+                
+                T_FinalTag T_li T_TagClose 	//</li>
+                list_item
+        
 	|	{insertar_nodo("list_item","epsilon");}epsilon		//Puede derivar en epsilon
 	;
+
 
 
 def_list_item	//Items de las listas descriptivas
@@ -542,7 +541,7 @@ text	:	T_IDENT {insertar_nodo("text",yylval.str);}
 
 Atribute : 	T_IDENT {insertar_nodo("Atribute",yylval.str);}
                 {insertar_nodo("Atribute","Atribute");}Atribute 	//Atributo
-	|	 {insertar_nodo("Atribute","epsilon");} epsilon		//puede derivar a epsilon
+	|	 {insertar_nodo("Atribute",yylval.str);} epsilon		//puede derivar a epsilon
 	;
 epsilon :	//Epsilon declarada como una regla solo por comprension
 	;
