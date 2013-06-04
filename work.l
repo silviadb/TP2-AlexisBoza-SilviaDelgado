@@ -14,9 +14,7 @@ TagClose >
 FinalTagClose "</"
 CommentOpenTag "<!--"
 CommentCloseTag "-->"
-Ident  [a-z,A-Z,0-9,".",":",",",";","/","\-","_",'\\',"@","{","}","(",")"]+
-Expresion "\""+{Ident}+"\""
-Atribute {Ident}"="{Expresion}  
+Ident  [a-z,A-Z,0-9,".",":",",",";","/","-","_",'\\',"@","{","}","(",")","=","\""]+
 /*fin definiciones*/
 %%
 a {if(flag == 1) return  T_a;}
@@ -69,7 +67,6 @@ textarea {if(flag == 1) return  T_textarea;}
 ul {if(flag == 1) return  T_ul;}
 {DocType} {if(flag == 1) return  T_DOCTYPE;}
 {Ident} {yylval.str=strdup(yytext);return T_IDENT;}
-{Atribute} {yylval.str=strdup(yytext);return T_ATT;}
 {Tag} {flag=1;return  T_Tag ;}
 {TagClose} {flag=0;return  T_TagClose;}
 {FinalTagClose} {flag=1; return  T_FinalTag;}
