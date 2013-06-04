@@ -107,12 +107,12 @@ de un arbol.
 void imprimir_arbol(struct Tnodo *nodo) 
 { 
    static int deep = 0; 
-   static int nspaces = 3; 
+   static int nspaces = 1; 
    int i, j; 
    while (nodo != NULL) { 
       for (i = 0; i < deep; i++) 
          for (j = 0; j < nspaces; j++) 
-            printf (" "); 
+            printf ("-"); 
       printf ("%s\n", nodo->nombre); 
       deep++; 
       imprimir_arbol (nodo->hijos); 
@@ -128,21 +128,19 @@ especifico y devuelve su referencia.
 void busca(struct Tnodo *raiz, char* nombre){
     struct Tnodo* aux2;
     aux2=raiz;
-    while (aux2 != NULL) { 
-        if(auxi!=NULL){
-           break;
-        }
-      else{
+    
+    while (aux2!= NULL) { 
         if(strcmp(aux2->nombre,nombre)==0){
              auxi=aux2;
-             break;
-       }
+             busca(aux2->hijos,nombre); 
+             aux2 = aux2->siguiente;
+        }
         else{ 
             busca(aux2->hijos,nombre); 
             aux2 = aux2->siguiente; 
         }
        }
-   } 
+    
 }
 /**************************************
 insertar_nodo:
@@ -158,21 +156,6 @@ void insertar_nodo(char* padre , char* nombre){
     if(aux!=NULL){
      Agrega_nodo(&aux,nombre);
     }
-    else {printf("No se pudo insertar %s \n ",nombre);}
+    else {printf("No se pudo insertar %s \n ",nombre);
+     }
 }
-
-/*int main(){   
-    Agrega_nodo(&root,"!DOCTYPE");
-    Agrega_nodo(&root,"<html>");
-    insertar_nodo("<html>","<header>");
-    insertar_nodo("<header>","identificador");
-    insertar_nodo("<html>","<head>");
-    insertar_nodo("<head>","<title>");
-    insertar_nodo("<title>","identificador");
-    insertar_nodo("<head>","<link>");
-    insertar_nodo("<html>","<body>");
-    insertar_nodo("<body>","<div>"); 
-    imprimir_arbol (root); 
-    liberar_arbol (root); 
- return 0;
-}*/
