@@ -14,7 +14,7 @@ TagClose >
 FinalTagClose "</"
 CommentOpenTag "<!--"
 CommentCloseTag "-->"
-Ident  [a-z,A-Z,0-9,".",":",",",";","/","-","_",'\\',"@","{","}","(",")","=","\""]+
+Ident  [a-z,A-Z,0-9,".",":",",",";","/","\-","_",'\\',"@","{","}","(",")","=","\""]+
 /*fin definiciones*/
 %%
 a {if(flag == 1) return  T_a;}
