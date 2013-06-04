@@ -277,7 +277,7 @@ list_item	//Un Item de una lista puede poseer solo texto o sublistas
                 T_FinalTag T_li T_TagClose 	//</li>
                 list_item
         
-	|	{insertar_nodo("list_item","epsilon");}epsilon		//Puede derivar en epsilon
+	|	epsilon		//Puede derivar en epsilon
 	;
 
 
@@ -287,7 +287,7 @@ def_list_item	//Items de las listas descriptivas
                 {insertar_nodo("def_list_item","def_list_item");}def_list_item	//Define terminos/nombres
 	| 	dd  
                 {insertar_nodo("def_list_item","def_list_item");}def_list_item	//Descripcion de cada termino/nombre
-	|	{insertar_nodo("def_list_item","epsilon");}epsilon
+	|	epsilon
 	;
 
 dt	:	T_Tag T_dt  T_TagClose {insertar_nodo("def_list_item","dt");
@@ -295,7 +295,7 @@ dt	:	T_Tag T_dt  T_TagClose {insertar_nodo("def_list_item","dt");
 		{insertar_nodo("dt","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_dt T_TagClose	//</dt>
 	;
-dd	:	T_Tag T_dd  T_TagClose	{insertar_nodo("def_list_item","dt");
+dd	:	T_Tag T_dd  T_TagClose	{insertar_nodo("def_list_item","dd");
                                          insertar_nodo("dd","T_dd");}//<dd>
 		{insertar_nodo("dd","text");}text //Texto dentro de la etiqueta
 		T_FinalTag T_dd T_TagClose	//</dd>
@@ -536,12 +536,12 @@ comment :	T_comment_open {insertar_nodo("body_content","body_tag");
 
 text	:	T_IDENT {insertar_nodo("text",yylval.str);}
                 {insertar_nodo("text","text");}text	//{insertar_nodo(etiqueta,yylval.str);}//Texto 
-	| 	{insertar_nodo("text","epsilon");}epsilon 	//puede derivar a epsilon
+	| 	epsilon 	//puede derivar a epsilon
 	;
 
 Atribute : 	T_IDENT {insertar_nodo("Atribute",yylval.str);}
                 {insertar_nodo("Atribute","Atribute");}Atribute 	//Atributo
-	|	 {insertar_nodo("Atribute","epsilon");} epsilon		//puede derivar a epsilon
+	|	  epsilon		//puede derivar a epsilon
 	;
 epsilon :	//Epsilon declarada como una regla solo por comprension
 	;
