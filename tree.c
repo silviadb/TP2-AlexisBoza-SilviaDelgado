@@ -88,6 +88,18 @@ void Agrega_nodo (struct Tnodo **raiz, char *nombre)
          ap->siguiente = nodo; 
       } }
    } else {
+     if(strcmp((*raiz)->nombre,nodo->nombre)==0){
+           if ((*raiz)->siguiente == NULL) { 
+          (*raiz)->siguiente = nodo; 
+      } 
+      else { 
+      struct Tnodo *ap; 
+      for (ap = (*raiz)->siguiente; ap->siguiente != NULL; ap = ap->siguiente) 
+         ; 
+      ap->siguiente = nodo; 
+   }
+      }
+      else{
        if ((*raiz)->hijos == NULL) { 
           (*raiz)->hijos = nodo; 
       } 
@@ -96,7 +108,7 @@ void Agrega_nodo (struct Tnodo **raiz, char *nombre)
       for (ap = (*raiz)->hijos; ap->siguiente != NULL; ap = ap->siguiente) 
          ; 
       ap->siguiente = nodo; 
-   } }
+   }} }
     
 } 
 /**************************************
