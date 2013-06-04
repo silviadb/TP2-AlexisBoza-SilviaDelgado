@@ -541,7 +541,7 @@ text	:	T_IDENT {insertar_nodo("text",yylval.str);}
 
 Atribute : 	T_IDENT {insertar_nodo("Atribute",yylval.str);}
                 {insertar_nodo("Atribute","Atribute");}Atribute 	//Atributo
-	|	 {insertar_nodo("Atribute",yylval.str);} epsilon		//puede derivar a epsilon
+	|	 {insertar_nodo("Atribute","epsilon");} epsilon		//puede derivar a epsilon
 	;
 epsilon :	//Epsilon declarada como una regla solo por comprension
 	;
