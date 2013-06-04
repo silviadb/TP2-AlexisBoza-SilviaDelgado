@@ -21,6 +21,7 @@ struct Tnodo {
 } *root = NULL;
 
 struct Tnodo *auxi;//Nodo auxiliar
+int i;
 
 /**************************************
 liberar_arbol:
