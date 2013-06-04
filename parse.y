@@ -548,13 +548,17 @@ epsilon :	//Epsilon declarada como una regla solo por comprension
 %%
 int main(){
 /**************PARSING**************/
+        i=0;
         Agrega_nodo(&root,"document");
 	yyparse();
-	imprimir_arbol (root); 
-    	liberar_arbol (root);
+        if(i==0){
+	imprimir_arbol (root);
+        liberar_arbol (root);}
+        else{
+    	liberar_arbol (root);}
 	return 0; 
 }
 /*******************************
 Errores Sintacticos
 ********************************/
-yyerror (char *s) {fprintf(stderr,"Syntax Error at line: %d\n",yylineno);}
+yyerror (char *s) {i=1; fprintf(stderr,"Syntax Error at line: %d\n",yylineno);}
