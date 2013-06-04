@@ -27,7 +27,7 @@ terminales de varias reglas del parser
 *******************************************************************/
 %token  T_a T_b T_blockquote T_body T_br T_button T_caption T_code T_div T_dl T_dt T_dd T_em T_embed T_footer T_form T_h1 
 %token  T_h2 T_h3 T_h4 T_h5 T_h6 T_head T_header T_hr T_html T_img T_input T_li T_link T_meta T_object T_ol T_option T_p 
-%token  T_pre T_script T_span T_strong T_style T_select T_table T_td T_th T_title T_tr T_textarea T_ul T_DOCTYPE  T_IDENT T_ATT 
+%token  T_pre T_script T_span T_strong T_style T_select T_table T_td T_th T_title T_tr T_textarea T_ul T_DOCTYPE  T_IDENT  
 %token  T_Tag T_TagClose T_FinalTag T_comment_open T_comment_close 
 %%
 /*************************************************************
@@ -43,69 +43,75 @@ Elementos Principales del Documento HTML
 -body
 -footer
 ***************************************/
-document: 	T_Tag T_DOCTYPE T_html T_TagClose {Agrega_nodo(&root,"!DOCTYPE");}  
-		T_Tag T_html T_TagClose{Agrega_nodo(&root,"html");}//<html>
-                header  //Header Content 
-		head    //Head Content
-		body	//Body Content
-		footer	//Footer Content
-		T_FinalTag T_html T_TagClose//</html>
+document: 	T_Tag T_DOCTYPE T_html T_TagClose {insertar_nodo("document","T_DOCTYPE");}  
+		T_Tag T_html T_TagClose {insertar_nodo("document","T_html");}//<html>
+               {insertar_nodo("T_html","header");} header   //Header Content 
+		{insertar_nodo("T_html","head");}head    //Head Content
+		{insertar_nodo("T_html","body");}body   //Body Content
+		{insertar_nodo("T_html","footer");}footer //Footer Content
+		T_FinalTag T_html T_TagClose //</html>
 	;
-header	: 	T_Tag T_header T_TagClose {insertar_nodo("html","header");}//<header> 
-		text	//Texto(identificadores) dentro de la etiqueta		
+header	: 	T_Tag T_header T_TagClose {insertar_nodo("header","T_header");}//<header> 
+		{insertar_nodo("header","text");}text	//Texto(identificadores) dentro de la etiqueta		
 		T_FinalTag T_header T_TagClose  //</header>
        	;
 
-head	: 	T_Tag T_head T_TagClose{insertar_nodo("html","head");}//<head>
-		title	//Titulo: es necesario en el Head
-		head_element //Conjunto de elementos que pueden aparacer dentro de la etiqueta del head
+head	: 	T_Tag T_head T_TagClose {insertar_nodo("head","T_head");}//<head>
+		{insertar_nodo("head","title");}title	//Titulo: es necesario en el Head
+		{insertar_nodo("head","head_element");}head_element //Conjunto de elementos que pueden aparacer en la etiqueta del head
 		T_FinalTag T_head T_TagClose//</head>
 	;
-body	: 	T_Tag T_body Atribute T_TagClose{insertar_nodo("html","body");} //<body>
-		body_content  //Conjunto de elementos que pueden aparecer dentro de la etiqueta del body
+body	: 	T_Tag T_body {insertar_nodo("body","T_body");}
+		{insertar_nodo("body","Atribute");} Atribute 
+                T_TagClose  //<body>
+		{insertar_nodo("body","body_content");}body_content //Conjunto de elementos que pueden aparecer dentro de la etiqueta del body
 		T_FinalTag T_body T_TagClose  //</body>
 	;
-footer	: 	T_Tag T_footer T_TagClose{insertar_nodo("html","footer");}//<footer>
-		text	//Texto dentro de la etiqueta
+footer	: 	T_Tag T_footer T_TagClose {insertar_nodo("footer","T_footer");}//<footer>
+		{insertar_nodo("footer","text");} text	//Texto dentro de la etiqueta
 		T_FinalTag T_footer T_TagClose //</footer>
 	;
 
 /******************************
 Elementos de la etiqueta <head>
 *******************************/
-title	:	T_Tag T_title T_TagClose//<title>
-		text //Titulo de la pagina
+title	:	T_Tag T_title T_TagClose  {insertar_nodo("title","T_title");}//<title>
+		{insertar_nodo("title","text");}text //Titulo de la pagina
 		T_FinalTag T_title T_TagClose//</title>
 	;
 
 head_element
-	:	script head_element 	//Elemento Script
-	|	style head_element 	//Elemento Style
-	|	META head_element  	//Elemento meta
-	|	LINK head_element  	//Elemento link
-	|	epsilon			//la etiqueta <head> puede estar vacia por lo que deriva a Epsilon
+	: 	script {insertar_nodo("head_element","head_element");}head_element //Elemento Script
+	|	style {insertar_nodo("head_element","head_element");}head_element //Elemento Style
+	|	META {insertar_nodo("head_element","head_element");}head_element  //Elemento meta
+	|	LINK {insertar_nodo("head_element","}head_element");}head_element  //Elemento link
+	|	{insertar_nodo("head_element","epsilon");}epsilon //la etiqueta <head> puede estar vacia por lo que deriva a Epsilon
 	;
 
-script	:	T_Tag T_script 
-		Atribute //Atributos del script 
+script	:	T_Tag T_script {insertar_nodo("head_element","script");
+                                insertar_nodo("script","T_script");}
+		{insertar_nodo("script","Atribute");}Atribute //Atributos del script 
 		T_TagClose//<script>
-		text //Texto dentro de la etiqueta 
+		{insertar_nodo("script","Atribute");}text //Texto dentro de la etiqueta 
 		T_FinalTag T_script T_TagClose//</script>
 	;
-style	:	T_Tag T_style 
-		Atribute //Atributos del style
+style	:	T_Tag T_style {insertar_nodo("head_element","style");
+                               insertar_nodo("style","T_style");}
+		{insertar_nodo("style","Atribute");}Atribute //Atributos del style
 		T_TagClose //<style>
-		text //Texto dentro de la etiqueta 
+		{insertar_nodo("script","text");}text //Texto dentro de la etiqueta 
 		T_FinalTag T_style T_TagClose//</style>
 	;
 META
-	: 	T_Tag T_meta  
-		Atribute //Atributos de la etiqueta
+	: 	T_Tag T_meta {insertar_nodo("head_element","META");
+                              insertar_nodo("META","T_meta");}  
+		{insertar_nodo("META","Atribute");}Atribute  //Atributos de la etiqueta
 		T_TagClose//<meta>
 	;
 LINK
-	:	T_Tag T_link 
-		Atribute //Atributos de la etiqueta
+	:	T_Tag T_link  {insertar_nodo("head_element","LINK");
+                               insertar_nodo("LINK","T_link");} 
+		{insertar_nodo("LINK","Atribute");}Atribute  //Atributos de la etiqueta
 		T_TagClose//<link>
 	;
 /**************FIN DE LOS TAGS DEL ENCABEZADO************/
@@ -114,8 +120,9 @@ LINK
 Elementos de la etiqueta <body>
 *********************************/
 body_content
-	: 	body_tag body_content//Conjunto de etiquetas o elementos que forman el contenido del body
-	| 	text   //texto dentro del body  
+	: 	{insertar_nodo("body_content","body_tag");}body_tag
+                {insertar_nodo("body_content","body_content");}body_content//Conjunto de etiquetas o elementos que forman el contenido del body
+	| 	{insertar_nodo("body_content","text");}text   //texto dentro del body  
 	;
 body_tag
 	: 	heading //Etiquetas de heading (h1-h6)
@@ -130,40 +137,58 @@ heading		//Etiquetas h1-h6
 	| 	h6 
 	;
 
-h1	:	T_Tag T_h1 
-		Atribute 	//Atributos de la etiqueta
+h1	:	T_Tag T_h1 {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h1");
+                            insertar_nodo("h1","T_h1");}
+		{insertar_nodo("h1","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h1>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("h1","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_h1 T_TagClose	//</h1>
 	;
-h2	:	T_Tag T_h2 
-		Atribute 	//Atributos de la etiqueta
+h2	:	T_Tag T_h2 {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h2");
+                            insertar_nodo("h2","T_h2");}
+		{insertar_nodo("h2","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h2>
-		text 		//Texto dentro de la etiqueta
-		T_FinalTag T_h2 T_TagClose	//<h2>
+		{insertar_nodo("h2","text");}text 	//Texto dentro de la etiqueta
+		T_FinalTag T_h2 T_TagClose	//</h2>
 	;
-h3	:	T_Tag T_h3 
-		Atribute 	//Atributos de la etiqueta
+h3	:	T_Tag T_h3 {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h3");
+                            insertar_nodo("h3","T_h3");}
+		{insertar_nodo("h3","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h3>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("h3","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_h3 T_TagClose	//</h3>
 	;
-h4	:	T_Tag T_h4 
-		Atribute	//Atributos de la etiqueta 
+h4	:	T_Tag T_h4 {insertar_nodo("body_content","body_tag");
+			    insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h4");
+                            insertar_nodo("h4","T_h4");}
+		{insertar_nodo("h4","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h4>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("h4","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_h4 T_TagClose	//</h4>
 	;
-h5	:	T_Tag T_h5
-		Atribute 	//Atributos de la etiqueta
+h5	:	T_Tag T_h5 {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h5");
+                            insertar_nodo("h5","T_h5");}
+		{insertar_nodo("h5","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h5>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("h5","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_h5 T_TagClose	//</h5>
 	;
-h6	:	T_Tag T_h6 
-		Atribute 	//Atributos de la etiqueta
+h6	:	T_Tag T_h6 {insertar_nodo("body_content","body_tag");
+			    insertar_nodo("body_tag","heading");
+                            insertar_nodo("heading","h6");
+                            insertar_nodo("h6","T_h6");}
+		{insertar_nodo("h6","Atribute");}Atribute   	//Atributos de la etiqueta
 		T_TagClose 	//<h6>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("h6","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_h6 T_TagClose	//</h6>
 	;
 block		//Etiquetas o elementos de bloque o contenido 
@@ -189,10 +214,13 @@ block		//Etiquetas o elementos de bloque o contenido
 	|	anchor
 	;
 paragraph
-	:	T_Tag T_p 
-		Atribute	//Atributos de la etiqueta 
+	:	T_Tag T_p {insertar_nodo("body_content","body_tag");
+                           insertar_nodo("body_tag","block");
+                           insertar_nodo("block","paragraph");
+                           insertar_nodo("paragraph","T_p");}
+		{insertar_nodo("paragraph","Atribute");}Atribute  	//Atributos de la etiqueta 
 		T_TagClose  	//<p>
-		text  		//Texto dentro de la etiqueta
+		{insertar_nodo("paragraph","text");}text  		//Texto dentro de la etiqueta
 		T_FinalTag T_p T_TagClose	//</p>	
 	;
 
@@ -203,249 +231,325 @@ list		//Listas XHTML ordenadas y desordenadas
 	;
 
 unordered_list	//Listas Desordenadas
-	:	T_Tag T_ul 
-		Atribute	//Atributos de la etiqueta
+	:	T_Tag T_ul {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","block");
+                           insertar_nodo("block","list");
+                           insertar_nodo("list","unordered_list");
+                           insertar_nodo("unordered_list","def_list");} 
+		{insertar_nodo("unordered_list","Atribute");}Atribute	//Atributos de la etiqueta
 		T_TagClose  	//<ul>
-		list_item	//Item de la lista 
+		{insertar_nodo("unordered_list","ist_item");}list_item	//Item de la lista 
 		T_FinalTag T_ul T_TagClose	//</ul>
 	;
 
 ordered_list	//Listas Ordenadas
-	:	T_Tag T_ol 
-		Atribute	//Atributos de la etiqueta 
+	:	T_Tag T_ol {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","block");
+                           insertar_nodo("block","list");
+                           insertar_nodo("list","ordered_list");
+                           insertar_nodo("ordered_list","T_ol");}
+		{insertar_nodo("ordered_list","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose  	//<ol>
-		list_item 	//Item de la Lista
+		{insertar_nodo("ordered_list","list_item");} list_item 	//Item de la Lista
 		T_FinalTag T_ol T_TagClose	//</ol>
 	;
 
 def_list	//Listas Descriptivas
-	:	T_Tag T_dl 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_dl {insertar_nodo("body_content","body_tag");
+                           insertar_nodo("body_tag","block");
+                           insertar_nodo("block","list");
+                           insertar_nodo("list","def_list");
+                           insertar_nodo("def_list","T_dl");}
+		{insertar_nodo("def_list","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose  	//<dl>
-		def_list_item 	//Item de la Lista
+		{insertar_nodo("def_list","def_list_item");}def_list_item 	//Item de la Lista
 		T_FinalTag T_dl T_TagClose 	//</dl>
 	;
 
 list_item	//Un Item de una lista puede poseer solo texto o sublistas
 	:	//Item con solo texto
-		T_Tag T_li  
-		Atribute 	//Atributos de la etiqueta
+		T_Tag T_li  {insertar_nodo("list_item","T_li");}
+		{insertar_nodo("list_item","Atribute");}Atribute  	//Atributos de la etiqueta
 		T_TagClose  	//<li>
-		text  		//Texto dentro de la etiqueta
-		T_FinalTag T_li T_TagClose list_item	//</li>
+		{insertar_nodo("list_item","text");}text  		//Texto dentro de la etiqueta
+		T_FinalTag T_li T_TagClose 	//</li>
 		//Item con Sublistas
-        |       T_Tag T_li  
-		Atribute	//Atributos de la etiqueta 
+        |       T_Tag T_li  {insertar_nodo("list_item","T_li");}
+		{insertar_nodo("list_item","Atribute");}Atribute     //Atributos de la etiqueta 
 		T_TagClose  	//<li>
-		list  		//Sublistas
-		T_FinalTag T_li T_TagClose list_item	//</li>	
-	|	epsilon		//Puede derivar en epsilon
-	;
-	
-def_list_item	//Items de las listas descriptivas
-	:	dt def_list_item	//Define terminos/nombres
-	| 	dd def_list_item	//Descripcion de cada termino/nombre
-	|	epsilon
+		{insertar_nodo("list_item","list");}list  		//Sublistas
+		T_FinalTag T_li T_TagClose 	//</li>	
+	|	{insertar_nodo("list_item","epsilon");}epsilon		//Puede derivar en epsilon
 	;
 
-dt	:	T_Tag T_dt  T_TagClose	//<dt>
-		text 	//Texto dentro de la etiqueta
+
+def_list_item	//Items de las listas descriptivas
+	:	dt 
+                {insertar_nodo("def_list_item","def_list_item");}def_list_item	//Define terminos/nombres
+	| 	dd  
+                {insertar_nodo("def_list_item","def_list_item");}def_list_item	//Descripcion de cada termino/nombre
+	|	{insertar_nodo("def_list_item","epsilon");}epsilon
+	;
+
+dt	:	T_Tag T_dt  T_TagClose {insertar_nodo("def_list_item","dt");
+                                        insertar_nodo("dt","T_dt");}	//<dt>
+		{insertar_nodo("dt","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_dt T_TagClose	//</dt>
 	;
-dd	:	T_Tag T_dd  T_TagClose	//<dd>
-		text //Texto dentro de la etiqueta
+dd	:	T_Tag T_dd  T_TagClose	{insertar_nodo("def_list_item","dt");
+                                         insertar_nodo("dd","T_dd");}//<dd>
+		{insertar_nodo("dd","text");}text //Texto dentro de la etiqueta
 		T_FinalTag T_dd T_TagClose	//</dd>
 	;
 preformatted
-	:	T_Tag T_pre  T_TagClose	//<pre>
-		text 	//Texto dentro de la etiqueta
+	:	T_Tag T_pre  T_TagClose{insertar_nodo("body_content","body_tag");
+                                        insertar_nodo("body_tag","block");
+                                        insertar_nodo("block","preformatted");
+                                	insertar_nodo("preformatted","T_pre");}//<pre>
+		{insertar_nodo("preformatted","text");}text 	//Texto dentro de la etiqueta
 		T_FinalTag T_pre T_TagClose	//</pre>
 	;
 
-div	:	T_Tag T_div 
-		Atribute 	//Atributos de la etiqueta
+div	:	T_Tag T_div {insertar_nodo("body_content","body_tag");
+                             insertar_nodo("body_tag","block");
+                             insertar_nodo("block","div");
+                             insertar_nodo("div","T_div");}
+		{insertar_nodo("div","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<div>
-		body_content 	//Un div puede contener varios elementos
+		{insertar_nodo("div","body_content");}body_content 	//Un div puede contener varios elementos
 		T_FinalTag T_div T_TagClose		//</div>
 	;
 
 blockquote
-	:	T_Tag T_blockquote 
-		Atribute	//Atributos de la etiqueta 
+	:	T_Tag T_blockquote {insertar_nodo("body_content","body_tag");
+                                    insertar_nodo("body_tag","block");
+                                    insertar_nodo("block","blockquote");
+                                    insertar_nodo("blockquote","T_blockquote");}
+		{insertar_nodo("blockquote","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose 	//<blockquote>
-		block 	//Para validar un blockquote en XHTML este debe contener otros elementos de bloque
+		{insertar_nodo("blockquote","block");}block 	//blockquote en XHTML este debe contener elementos de bloque
 		T_FinalTag T_blockquote T_TagClose	//</blockquote>
 	;
 
 form
  	:	
-		T_Tag T_form 
-		Atribute	//Atributos de la etiqueta 
+		T_Tag T_form {insertar_nodo("body_content","body_tag");
+                              insertar_nodo("body_tag","block");
+                              insertar_nodo("block","form");
+                              insertar_nodo("form","T_form");}
+		{insertar_nodo("form","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose 	//<form>
-		form_field   	//Elementos de la etiqueta <form>
+		{insertar_nodo("form","form_field");}form_field   	//Elementos de la etiqueta <form>
 		T_FinalTag T_form T_TagClose	//</form>
 	;
 
 form_field	//Elementos del form
-	:	INPUT form_field
-	| 	select form_field
-	| 	textarea form_field
-	|	epsilon
+	:	INPUT {insertar_nodo("form_field","form_field");}form_field
+	| 	select {insertar_nodo("form_field","form_field");}form_field
+	| 	textarea {insertar_nodo("form_field","form_field");}form_field
+	|	{insertar_nodo("form_field","epsilon");}epsilon
 	;
 
-INPUT   :	T_Tag T_input 
-		Atribute 	//Atributos de la etiqueta
+INPUT   :	T_Tag T_input {insertar_nodo("form_field","INPUT");
+                               insertar_nodo("INPUT","T_input");}
+		{insertar_nodo("INPUT","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose	//<input>  
 	;
 
 select
-	:	T_Tag T_select 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_select {insertar_nodo("form_field","select");
+                                insertar_nodo("select","T_select");}
+		{insertar_nodo("select","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose  	//<select>
-		select_option  	//Opciones del select
+		{insertar_nodo("select","select_option");}select_option  	//Opciones del select
 		T_FinalTag T_select T_TagClose	//</select>
 	;
 
 select_option
-	:	T_Tag T_option 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_option {insertar_nodo("select_option","T_option");}
+		{insertar_nodo("select_option","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<option>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("select_option","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_option T_TagClose select_option	//</option>
-	|	epsilon	//Puede no tener por lo que deriva en Epsilon
+	|	{insertar_nodo("select_option","epsilon");}epsilon	//Puede no tener por lo que deriva en Epsilon
 	;
 
 textarea
-	:	T_Tag T_textarea
-		Atribute	//Atributos de la etiqueta 
+	:	T_Tag T_textarea {insertar_nodo("form_field","textarea");
+                                  insertar_nodo("textarea","T_textarea");}
+		{insertar_nodo("textarea","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose  	//<textarea>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("textarea","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_textarea T_TagClose	//</textarea>
 	;
 
 BR
-	:	T_Tag T_br 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_br {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","block");
+                            insertar_nodo("block","BR");
+                            insertar_nodo("BR","T_br");}
+		{insertar_nodo("BR","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose	//<br> 
 	;
-HR	:	T_Tag T_hr 
-		Atribute 	//Atributos de la etiqueta
+HR	:	T_Tag T_hr {insertar_nodo("body_content","body_tag");
+                            insertar_nodo("body_tag","block");
+                            insertar_nodo("block","HR");
+                            insertar_nodo("HR","T_hr");}
+		{insertar_nodo("HR","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose	//<hr>
 	;
-IMG	:	T_Tag T_img 
-		Atribute	//Atributos de la etiqueta 
+IMG	:	T_Tag T_img {insertar_nodo("body_content","body_tag");
+                             insertar_nodo("body_tag","block");
+                             insertar_nodo("block","IMG");
+                             insertar_nodo("IMG","T_img");}
+		{insertar_nodo("IMG","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose	//<img>
 	;
 
 
 table
-	:	T_Tag T_table 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_table {insertar_nodo("body_content","body_tag");
+                               insertar_nodo("body_tag","block");
+                               insertar_nodo("block","table");
+                               insertar_nodo("table","T_table");}
+		{insertar_nodo("table","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<table>
-		caption 	//caption de la etiqueta <table>
-		tr  		//TableRow
+		{insertar_nodo("table","caption");}caption 	//caption de la etiqueta <table>
+		{insertar_nodo("table","tr");}tr  		//TableRow
 		T_FinalTag T_table T_TagClose	//</table>
 	;
 
 caption
-	:	T_Tag T_caption 
-		Atribute 	//Atributos de la etiqueta
+	:	T_Tag T_caption {insertar_nodo("caption","T_caption");}
+		{insertar_nodo("caption","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<caption>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("caption","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_caption T_TagClose		//<caption>
 	;
 
-tr	:	T_Tag T_tr 
-		Atribute 	//Atributos de la etiqueta
+tr	:	T_Tag T_tr {insertar_nodo("tr","T_tr");}
+		{insertar_nodo("tr","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<tr>
-		th_or_td 	//th or td
+		{insertar_nodo("tr","th_or_td");}th_or_td 	//th or td
 		T_FinalTag T_tr T_TagClose tr	//</tr>
 	|	epsilon	//Puede no tener por lo que deriva a Epsilon
 	;
 
 th_or_td
-	:       T_Tag T_th T_TagClose //<th>
-		 body_content 	//Elementos de contenido
+	:       T_Tag T_th T_TagClose{insertar_nodo("th_or_td","T_th");} //<th>
+		 {insertar_nodo("th_or_td","body_content");}body_content 	//Elementos de contenido
 		T_FinalTag T_th T_TagClose //</th>
-        |       T_Tag T_td T_TagClose  	//<td>
-		body_content 	//Elementos de contenido
+        |       T_Tag T_td T_TagClose{insertar_nodo("th_or_td","T_td");} //<td>
+		 {insertar_nodo("th_or_td","body_content");}body_content 	//Elementos de contenido
 		T_FinalTag T_td T_TagClose //</td>
 	;
-bold:	        T_Tag T_b T_TagClose //<b>  
-		text  //Texto dentro de la etiqueta
+bold:	        T_Tag T_b T_TagClose {insertar_nodo("body_content","body_tag");
+                                      insertar_nodo("body_tag","block");
+                                      insertar_nodo("block","bold");
+                                      insertar_nodo("bold","T_b");}//<b>  
+		{insertar_nodo("bold","text");}text  //Texto dentro de la etiqueta
 		T_FinalTag T_b T_TagClose	//</b>
 	;
 emphasize
-	:	T_Tag T_em T_TagClose //<embed>
-		text  	//Texto dentro de la etiqueta
+	:	T_Tag T_em T_TagClose {insertar_nodo("body_content","body_tag");
+                                       insertar_nodo("body_tag","block");
+                                       insertar_nodo("block","emphasize");
+                                       insertar_nodo("emphasize","T_em");}//<embed>
+		{insertar_nodo("emphasize","text");}text  	//Texto dentro de la etiqueta
 		T_FinalTag T_em T_TagClose	//</embed>
 	;
 
 strong
-	:	T_Tag T_strong T_TagClose	//<strong>
-		text  //Texto dentro de la etiqueta
+	:	T_Tag T_strong T_TagClose {insertar_nodo("body_content","body_tag");
+                                           insertar_nodo("body_tag","block");
+                                           insertar_nodo("block","strong");
+                                           insertar_nodo("strong","T_strong");}	//<strong>
+		{insertar_nodo("strong","text ");}text  //Texto dentro de la etiqueta
 		T_FinalTag T_strong T_TagClose	//</strong>
 	;
 code
-	:	T_Tag T_code T_TagClose 	//<code> 
-		text  	//Texto dentro de la etiqueta
+	:	T_Tag T_code T_TagClose {insertar_nodo("body_content","body_tag");
+                                         insertar_nodo("body_tag","block");
+                                         insertar_nodo("block","code");
+                                         insertar_nodo("code","T_code");}		//<code> 
+		{insertar_nodo("code","text");}text  	//Texto dentro de la etiqueta
 		T_FinalTag T_code T_TagClose	//</code>
 	;
 
 anchor	
-	:	T_Tag T_a 
-		Atribute	//Atributos de la etiqueta 
+	:	T_Tag T_a {insertar_nodo("body_content","body_tag");
+                           insertar_nodo("body_tag","block");
+                           insertar_nodo("block","anchor");
+                           insertar_nodo("anchor","T_a");}
+		{insertar_nodo("anchor","Atribute");}Atribute	//Atributos de la etiqueta 
 		T_TagClose 	//<anchor>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("anchor","text");} text 		//Texto dentro de la etiqueta
 		T_FinalTag T_a T_TagClose	//</anchor>
 	;
 button 
-        :	T_Tag T_button 
-		Atribute 	//Atributos de la etiqueta
+        :	T_Tag T_button {insertar_nodo("body_content","body_tag");
+                                insertar_nodo("body_tag","block");
+                                insertar_nodo("block","button");
+                                insertar_nodo("button","T_button");}
+		{insertar_nodo("button","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<button>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("button","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_button T_TagClose	//<button>
         ;
 span 
-        :	T_Tag T_span 
-		Atribute 	//Atributos de la etiqueta
+        :	T_Tag T_span {insertar_nodo("body_content","body_tag");
+                              insertar_nodo("body_tag","block");
+                              insertar_nodo("block","span");
+                              insertar_nodo("span","T_span");}
+		{insertar_nodo("span","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<span>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("span","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_span T_TagClose	//</span>
         ;
 embed 
-        :	T_Tag T_embed 
-		Atribute 	//Atributos de la etiqueta
+        :	T_Tag T_embed {insertar_nodo("body_content","body_tag");
+                               insertar_nodo("body_tag","block");
+                               insertar_nodo("block","embed");
+                               insertar_nodo("embed","T_embed");}
+		{insertar_nodo("embed","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<embed>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("embed","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_embed T_TagClose	//<embed>
         ;
 object 
-        :	T_Tag T_object 
-		Atribute 	//Atributos de la etiqueta
+        :	T_Tag T_object {insertar_nodo("body_content","body_tag");
+                                insertar_nodo("body_tag","block");
+                                insertar_nodo("block","object");
+                                insertar_nodo("object","T_object");}
+		{insertar_nodo("object","Atribute");}Atribute 	//Atributos de la etiqueta
 		T_TagClose 	//<object>
-		text 		//Texto dentro de la etiqueta
+		{insertar_nodo("object","text");}text 		//Texto dentro de la etiqueta
 		T_FinalTag T_object T_TagClose	//</embed>
         ;
-comment :	T_comment_open 	//<!-- 
+comment :	T_comment_open {insertar_nodo("body_content","body_tag");
+                                insertar_nodo("body_tag","block");
+                                insertar_nodo("block","comment");}	//<!-- 
 		body_content //Cualquier tipo de contenido
 		T_comment_close	//-->
 	;
 
 /*******************************FIN DE LOS TAGS DEL BODY****************************************/
 
-text	:	T_IDENT text	//{insertar_nodo(etiqueta,yylval.str);}//Texto 
-	| 	epsilon 	//puede derivar a epsilon
+text	:	T_IDENT {insertar_nodo("text",yylval.str);}
+                {insertar_nodo("text","text");}text	//{insertar_nodo(etiqueta,yylval.str);}//Texto 
+	| 	{insertar_nodo("text","epsilon");}epsilon 	//puede derivar a epsilon
 	;
 
-Atribute : 	T_ATT Atribute 	//Atributo
-	|	epsilon		//puede derivar a epsilon
+Atribute : 	T_IDENT {insertar_nodo("Atribute",yylval.str);}
+                {insertar_nodo("Atribute","Atribute");}Atribute 	//Atributo
+	|	 {insertar_nodo("Atribute","epsilon");} epsilon		//puede derivar a epsilon
 	;
 epsilon :	//Epsilon declarada como una regla solo por comprension
 	;
 %%
 int main(){
 /**************PARSING**************/
+        Agrega_nodo(&root,"document");
 	yyparse();
 	imprimir_arbol (root); 
     	liberar_arbol (root);
